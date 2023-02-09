@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     textStyle: {
         fontSize: 16,
         fontWeight: '300',
-        fontStyle: 'italic',
+        // fontStyle: 'italic',
         // backgroundColor: '#f778ba4c',
         // borderRadius: 10, 
         padding: 10,

@@ -51,6 +51,7 @@ const SecondaryScreen = ({navigation}: {navigation: Navgation}) => {
         //     password: password,
         //     phoneNumber: phoneNumber,
         // }
+        // push(ref( db, '/user/'), {data})
 
         push(ref(db, '/user/'), {
             id: uuid.v4(),
@@ -60,7 +61,6 @@ const SecondaryScreen = ({navigation}: {navigation: Navgation}) => {
             phoneNumber: phoneNumber,
         })
 
-        // push(ref( db, '/user/'), {data})
         // Doubtful -------------------------------------------------------------------------------
         // database()
         //     .ref('/users/'+data.id)

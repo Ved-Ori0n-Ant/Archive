@@ -6,15 +6,14 @@ import fieldValidator from "../signUpModule/signUpScreenValidator";
 import TextInputComponent from "../../customComponents/textInputComponent";
 import auth from '@react-native-firebase/auth';
 
+export let CURRENT_USER_NAME: any;
 interface Navgation {
     navigate(destination?: string, params?: any): void;
 }
 
 const HomeScreen = ({navigation}: {navigation: Navgation}) => {
-    // const navigation = useNavigation();
     const validator = fieldValidator();
     const [errorMessage, setErrorMessage] = useState<string>('');
-    // const {userEmail, userPhoneNumber} = route.params
     const {
         email, 
         setEmail, 
@@ -22,20 +21,22 @@ const HomeScreen = ({navigation}: {navigation: Navgation}) => {
         emailValidator,
         password, 
         setPassword, 
+        name,
         // setPhoneNumber,
         // phoneNumberError,
         // phoneNumber,
         // phoneNumberValidator
     } = validator
+    CURRENT_USER_NAME = name;
     const logInPressed = async() => {
         try{
             const userLogin = await auth().signInWithEmailAndPassword(email, password)
-            // console.log(userLogin)
+            console.log(userLogin)
             setErrorMessage('')
             setEmail('')
             setPassword('')
             // navigation.navigate('Notifications')
-            navigation.navigate('Users Screen')
+            navigation.navigate('Users Screen', {data:{email, password}})
         } catch (err: any){
             console.log(err)
             setErrorMessage(err.message)
@@ -63,9 +64,9 @@ const HomeScreen = ({navigation}: {navigation: Navgation}) => {
                 />
                 {phoneNumberError !== '' ? (<TextComponent text={phoneNumberError} textStyle={styles.errorText} containerStyle = {styles.textInputContainer}/>):(null)} */}
                 <View style={[styles.textInputContainer, {borderBottomWidth: 1}]}>
-                    <TextInput 
+                    <TextInput
                         placeholder="Enter your password"
-                        style = { [styles.inputText, {fontStyle: 'italic', padding: 10}] }
+                        style = { [styles.inputText, { padding: 10}] }
                         secureTextEntry = {true}
                         onChangeText = { (value) => {setPassword(value)}}
                     />
@@ -92,7 +93,7 @@ const HomeScreen = ({navigation}: {navigation: Navgation}) => {
 const styles = StyleSheet.create({
     homeScreenMainContainer: {
         flex: 1,
-        backgroundColor: '#c0c0c0',
+        backgroundColor: '#fff',
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -138,10 +139,10 @@ const styles = StyleSheet.create({
         alignSelf: 'center'
     },
     signinPhone: {
-        fontSize: 12,
+        fontSize: 14,
         color: 'black',
         alignSelf: 'center',
-        marginBottom: 13,
+        marginBottom: 8,
         // textDecorationLine: 'underline'
     }
 })

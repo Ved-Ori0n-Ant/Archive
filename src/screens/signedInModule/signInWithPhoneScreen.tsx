@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
     },
     inputText: {
-        fontSize: 10,
+        fontSize: 14,
         height: 35,
         fontWeight: '500'
     },
@@ -147,15 +147,15 @@ const styles = StyleSheet.create({
         fontSize: 8,
     },
     signupNavigator: {
-        fontSize: 12,
+        fontSize: 16,
         color: 'blue',
-        alignSelf: 'center'
+        alignSelf: 'center',
     },
     signinPhone: {
-        fontSize: 10,
+        fontSize: 14,
         color: 'black',
         alignSelf: 'center',
-        marginBottom: 13,
+        marginBottom: 8,
         // textDecorationLine: 'underline'
     }
 })
