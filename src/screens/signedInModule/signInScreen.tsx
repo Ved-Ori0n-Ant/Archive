@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, KeyboardAvoidingView, TextInput } from 'react-native'
-import { useNavigation, useRoute } from "@react-navigation/native";
 import TextComponent from "../../customComponents/textComponent";
 import fieldValidator from "../signUpModule/signUpScreenValidator";
 import TextInputComponent from "../../customComponents/textInputComponent";
 import auth from '@react-native-firebase/auth';
 
-export let CURRENT_USER_NAME: any;
 interface Navgation {
     navigate(destination?: string, params?: any): void;
 }
@@ -27,7 +25,6 @@ const HomeScreen = ({navigation}: {navigation: Navgation}) => {
         // phoneNumber,
         // phoneNumberValidator
     } = validator
-    CURRENT_USER_NAME = name;
     const logInPressed = async() => {
         try{
             const userLogin = await auth().signInWithEmailAndPassword(email, password)
@@ -36,7 +33,7 @@ const HomeScreen = ({navigation}: {navigation: Navgation}) => {
             setEmail('')
             setPassword('')
             // navigation.navigate('Notifications')
-            navigation.navigate('Users Screen', {data:{email, password}})
+            navigation.navigate('Users Screen', {email, password, name})
         } catch (err: any){
             console.log(err)
             setErrorMessage(err.message)

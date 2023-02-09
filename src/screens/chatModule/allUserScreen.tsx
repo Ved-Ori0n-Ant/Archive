@@ -10,27 +10,30 @@ import { onValue, push, ref, update } from "firebase/database";
 import { db } from "../../../firebase-config";
 import TextComponent from "../../customComponents/textComponent";
 import uuid from "react-native-uuid";
+import { useNavigation } from "@react-navigation/native";
 import { useRoute } from "@react-navigation/native";
-import navigation from "../../../srcForChatting/utils/sevices/navigation";
-import { CURRENT_USER_NAME } from "../signedInModule/signInScreen";
-// import { useNavigation } from "@react-navigation/native";
 
 let roomId = uuid.v4();
 
-interface Navgation {
-  navigate(destination?: string, params?: any): void;
-}
+// interface Navgation {
+//   navigate(destination?: string, params?: any): void;
+// }
 
-const ShowAllUser = ({navigation}: {navigation: Navgation}) => {
+// const ShowAllUser = ({navigation}: {navigation: Navgation}, props:any) => {
+const ShowAllUser = () => {
+
+  const route = useRoute();
+  const params: any = route.params;
+  console.log(params, 'Params from signin screen')
 
   const [data, setData] = React.useState<any>([]);
-  const [currentUserData, setCurrentUserData] = React.useState<any>([]);
   const [fromUserData, setFromUserData] = React.useState<any>([]);
   const [toUserData, setToUserData] = React.useState<any>([]);
   const [tempData, setTempData] = React.useState<any>([]);
   const [lastMsg, setLastMsg] = React.useState<string>("Loading.....");
 
-  console.log(CURRENT_USER_NAME)
+
+    const navigation = useNavigation();
 
   React.useEffect(() => {
     return onValue(ref(db, "/user/"), (querySnapShot: any) => {
@@ -40,7 +43,7 @@ const ShowAllUser = ({navigation}: {navigation: Navgation}) => {
         console.log(tempData, "tempData");
         setFromUserData(
             Object.values(tempData).filter(
-                (item: any) => item.name == "chatUserAlpha"
+                (item: any) => item.email == params.email
             )
         );
 console.log("fromUser data", fromUserData);
@@ -50,7 +53,7 @@ console.log("fromUser data", fromUserData);
   React.useEffect(() => {
     setData(
       Object.values(tempData).filter(
-        (item: any) => item.name !== "chatUserAlpha"
+        (item: any) => item.email !== params.email
       )
     );
     console.log(data, "newData");
@@ -95,7 +98,7 @@ console.log("fromUser data", fromUserData);
         toUser
       );
       console.log({data: item}, 'to be routed...................')
-      navigation.navigate("Chatting Screen", { item, fromUserData });
+      navigation.navigate("Chatting Screen" as never, { item, fromUserData } as never);
     } catch (err: any) {
       console.log(err.message);
     }

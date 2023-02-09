@@ -1,13 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Bubble, GiftedChat } from 'react-native-gifted-chat';
 import database from '@react-native-firebase/database'
 import { onValue, push, ref } from 'firebase/database';
 import { db } from '../../../firebase-config';
+import { useRoute } from '@react-navigation/native';
 const ShowChat = (props: any) => {
     
     const [messages, setMessages] = React.useState<any>([]);
+    const route = useRoute()
+    const params: any = route.params
 
-    // const {data} = props.route.params;
+    useEffect(() => {
+        console.log('page rendered')
+    }, [])
+    
+
+    // const {ata} = props.route.params;
     // console.log(data.item, 'toUserData', data.fromUserData[0], 'routed data')
 
 
@@ -30,8 +38,8 @@ const ShowChat = (props: any) => {
         const myMsg = messageArray[0]
         const msg = {
             ...myMsg, 
-            recieverId: 'data.item.id', 
-            senderId: 'data.fromUserData[0].id', 
+            recieverId: params?.item?.id, 
+            senderId: params?.fromUserData[0]?.id, 
         }
         console.log(msg)
         setMessages((previousMessages: any) => GiftedChat.append(previousMessages, messageArray))
@@ -41,7 +49,7 @@ const ShowChat = (props: any) => {
         <GiftedChat
             messages={messages}
             onSend={messages => onSend(messages)}
-            user={{ _id: 'data.fromUserData[0].id' }}
+            user={{ _id: params?.fromUserData[0]?.id }}
             renderBubble={props => {
                 return (<Bubble {...props} wrapperStyle={{
                     right: {
