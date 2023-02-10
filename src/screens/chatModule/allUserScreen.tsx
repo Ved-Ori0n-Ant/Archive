@@ -1,94 +1,68 @@
 import React from "react";
-import {
-  FlatList,
-  View,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
+import { FlatList, View, TouchableOpacity, StyleSheet } from "react-native";
 import { UserCardComponent } from "../../customComponents/userCardComponent";
-import { onValue, push, ref, update } from "firebase/database";
+import { onValue, ref, update } from "firebase/database";
 import { db } from "../../../firebase-config";
 import TextComponent from "../../customComponents/textComponent";
-import uuid from "react-native-uuid";
 import { useNavigation } from "@react-navigation/native";
 import { useRoute } from "@react-navigation/native";
 
-let roomId = uuid.v4();
-
+// Navigation
 // interface Navgation {
 //   navigate(destination?: string, params?: any): void;
 // }
 
-// const ShowAllUser = ({navigation}: {navigation: Navgation}, props:any) => {
+
+//Screen function component
 const ShowAllUser = () => {
 
   const route = useRoute();
   const params: any = route.params;
-  console.log(params, 'Params from signin screen')
 
-  const [data, setData] = React.useState<any>([]);
-  const [fromUserData, setFromUserData] = React.useState<any>([]);
-  const [toUserData, setToUserData] = React.useState<any>([]);
-  const [tempData, setTempData] = React.useState<any>([]);
-  const [lastMsg, setLastMsg] = React.useState<string>("Loading.....");
+  const [data, setData] = React.useState<any>([]); //Flatlist data
+  const [fromUserData, setFromUserData] = React.useState<any>([]); //Stores data brought from which user
+  const [toUserData, setToUserData] = React.useState<any>([]); //Stores data of the user to whom the data is to be sent
+  const [tempData, setTempData] = React.useState<any>([]); //Temporary storage for all user values
 
+  const navigation = useNavigation();
 
-    const navigation = useNavigation();
-
+  // getting temp data from user collection and fetching current user as from user data
   React.useEffect(() => {
-    return onValue(ref(db, "/user/"), (querySnapShot: any) => {
-        let primeTemp = querySnapShot.val();
-        let secondaryTemp = {...primeTemp}
-        setTempData(secondaryTemp);
-        console.log(tempData, "tempData");
-        setFromUserData(
-            Object.values(tempData).filter(
-                (item: any) => item.email == params.email
-            )
-        );
-console.log("fromUser data", fromUserData);
+    onValue(ref(db, "/user/"), (querySnapShot: any) => {
+      let temp: any = querySnapShot.val();
+      let tempSpreader: any = { ...temp };
+      setTempData(tempSpreader);
+      setFromUserData(
+        Object.values(tempData).filter(
+          (item: any) => item.email == params.email
+        )
+      );
     });
   }, [data]);
 
+  // this data will be displayed on screen
   React.useEffect(() => {
     setData(
-      Object.values(tempData).filter(
-        (item: any) => item.email !== params.email
-      )
+      Object.values(tempData).filter((item: any) => item.email !== params.email)
     );
-    console.log(data, "newData");
-  }, []);
-
-  React.useEffect(() => {
-    onValue(ref(db, "/chatlist/"), (snapShot: any) => {
-    //   console.log(fromUserData[0]?.id, "fromUser ni id");
-      // console.log(toUserData[0].id, 'toUser ni id')
-    //   console.log(Object.values(snapShot.val())[0], '---------------last message must be seen')
-    })
-  }, []);
+  }, [params?.email]);
 
   const moveToChat = async (item: any) => {
     try {
       let fromUser = {
         name: await fromUserData[0]?.name,
         email: await fromUserData[0]?.email,
-        lastMsg: lastMsg,
         id: await fromUserData[0]?.id,
-        roomId: roomId,
       };
 
       let toUser = {
         name: await toUserData[0]?.name,
         email: await toUserData[0]?.email,
-        lastMsg: lastMsg,
         id: await toUserData[0]?.id,
-        roomId: roomId,
       };
-      console.log(fromUser, toUser, 'values.........')
       setToUserData(
         Object.values(tempData).filter((e: any) => e.name === item?.name)
       );
-      // console.log(toUserData[0].id, '------touser-----', fromUserData[0].id, '-----fromuser-----' )
       await update(
         ref(db, "/chatlist/" + toUserData[0]?.id + "/" + fromUserData[0]?.id),
         fromUser
@@ -97,10 +71,12 @@ console.log("fromUser data", fromUserData);
         ref(db, "/chatlist/" + fromUserData[0]?.id + "/" + toUserData[0]?.id),
         toUser
       );
-      console.log({data: item}, 'to be routed...................')
-      navigation.navigate("Chatting Screen" as never, { item, fromUserData } as never);
+      navigation.navigate(
+        "Chatting Screen" as never,
+        { item, fromUserData } as never
+      );
     } catch (err: any) {
-      console.log(err.message);
+      console.log(err.message, 'err message');
     }
   };
 
@@ -111,9 +87,7 @@ console.log("fromUser data", fromUserData);
       </View>
       <FlatList
         data={data}
-        // keyExtractor={(item) => item?.id}
         renderItem={(item: any) => {
-          // console.log(item, '------item values')
           return (
             <TouchableOpacity
               onPress={() => {
@@ -123,7 +97,6 @@ console.log("fromUser data", fromUserData);
               <UserCardComponent
                 userName={item?.item?.name}
                 containerStyle={styles.cardContainer}
-                lastMsg={lastMsg}
               />
             </TouchableOpacity>
           );

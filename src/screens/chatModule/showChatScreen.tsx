@@ -1,18 +1,17 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Bubble, GiftedChat } from 'react-native-gifted-chat';
-import database from '@react-native-firebase/database'
 import { onValue, push, ref } from 'firebase/database';
 import { db } from '../../../firebase-config';
 import { useRoute } from '@react-navigation/native';
-const ShowChat = (props: any) => {
+const ShowChat = () => {
     
     const [messages, setMessages] = React.useState<any>([]);
     const route = useRoute()
     const params: any = route.params
 
-    useEffect(() => {
-        console.log('page rendered')
-    }, [])
+    // useEffect(() => {
+    //     console.log('page rendered')
+    // }, [])
     
 
     // const {ata} = props.route.params;
@@ -20,37 +19,36 @@ const ShowChat = (props: any) => {
 
 
     React.useEffect(() => {
-        // const querySnapShot = database().ref('chat/personalMessages').orderByValue().once('value')
         onValue(ref(db, '/chat/personalMessages'), (querySnapShot: any) => {
-            console.log('line 17......................')
-            let primeTemp: any = querySnapShot.val()
-            console.log(primeTemp,  '............database value once read')
-            let secondaryTemp: any = {...primeTemp}
-            console.log(secondaryTemp,  '............database value once read')
-            let tertiaryTemp: any = Object.values(secondaryTemp)
-            console.log(tertiaryTemp, '............database value once read')
-            let val: any = tertiaryTemp[0]
-            console.log(val, '............database value once read')
+            let temp: any = querySnapShot.val()
+            let tempSpreader: any = {...temp}
+            let tempIdStripped: any = Object.values(tempSpreader)
+            let val: any = tempIdStripped[0]
+            // setMessages([val])
+            console.log(val, ':::::::::............value............:::::::::')
         })
     }, [])
 
-    const onSend = (messageArray: any) => {
+    const onSend = useCallback((messageArray: any[]) => {
         const myMsg = messageArray[0]
         const msg = {
             ...myMsg, 
             recieverId: params?.item?.id, 
             senderId: params?.fromUserData[0]?.id, 
+            user: {_id: params?.fromUserData[0]?.id, name: params?.fromUserData[0].name}
         }
         console.log(msg)
-        setMessages((previousMessages: any) => GiftedChat.append(previousMessages, messageArray))
+        setMessages((previousMessages: any) => GiftedChat.append(previousMessages as any, messageArray))
         push(ref(db, '/chat/personalMessages'), { msg })
-    }
+    }, [])
+
+    console.log(messages, ':::::Messages::::: of user ', params?.fromUserData[0].name)
     return (
         <GiftedChat
             messages={messages}
             onSend={messages => onSend(messages)}
-            user={{ _id: params?.fromUserData[0]?.id }}
-            renderBubble={props => {
+            user={{_id: params?.fromUserData[0]?.id}}
+            renderBubble={(props: any) => {
                 return (<Bubble {...props} wrapperStyle={{
                     right: {
                         backgroundColor: '#acacac',

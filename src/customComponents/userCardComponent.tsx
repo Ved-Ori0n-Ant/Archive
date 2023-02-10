@@ -4,19 +4,15 @@ import { View, Text, StyleSheet, StyleProp, ViewStyle, Image } from 'react-nativ
 type UserCardComponentProp = {
     userName?: string
     containerStyle?: StyleProp<ViewStyle>
-    lastMsg?: string
 }
 
 export const UserCardComponent = (prop: UserCardComponentProp) => {
-    const {containerStyle, lastMsg} = prop
+    const {containerStyle} = prop
     return(
         <View style = {[styles.cardContainer, containerStyle]}>
             <View style = {{flex: 0, flexDirection: 'row', justifyContent: 'space-between', padding: 13}}>
                 <Text style={styles.userNameText}>{prop.userName}</Text>
                 <Image source = {require('../assets/images/messageIcon.png')} style = {{height: 20, width: 20}} />
-            </View>
-            <View style = {{flex: 0, flexDirection: 'row', justifyContent: 'space-between', padding: 13}}>
-                <Text style = {styles.lastMsg}>{lastMsg || 'Loading ....'}</Text>
             </View>
         </View>
     )

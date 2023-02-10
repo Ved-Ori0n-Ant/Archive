@@ -90,7 +90,7 @@ const HomeScreen = ({navigation}: {navigation: Navgation}) => {
 const styles = StyleSheet.create({
     homeScreenMainContainer: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#acacac',
         justifyContent: 'center',
         alignItems: 'center',
     },
