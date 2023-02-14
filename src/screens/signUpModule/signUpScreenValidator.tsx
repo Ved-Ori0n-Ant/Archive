@@ -14,7 +14,7 @@ export default function fieldValidator() {
 
     const [isValidated, setIsValidated] = useState<boolean>(false)
 
-    var namePattern = /^[a-zA-Z]+$/;
+    var namePattern = /^[a-zA-Z 0-9]+$/;
     var emailPattern = /^[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-z0-9-]+)*$/
 
     useEffect(() => {

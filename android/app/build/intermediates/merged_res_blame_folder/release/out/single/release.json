@@ -32,6 +32,10 @@
         "source": "com.demo.app-main-37:/mipmap-hdpi/ic_launcher_round.png"
     },
     {
+        "merged": "com.demo.app-merged_res-36:/drawable-mdpi_src_assets_images_gallery.png.flat",
+        "source": "com.demo.app-react-31:/drawable-mdpi/src_assets_images_gallery.png"
+    },
+    {
         "merged": "com.demo.app-merged_res-36:/drawable-xxhdpi_node_modules_reactnavigation_elements_src_assets_backicon.png.flat",
         "source": "com.demo.app-react-31:/drawable-xxhdpi/node_modules_reactnavigation_elements_src_assets_backicon.png"
     },
@@ -58,6 +62,10 @@
     {
         "merged": "com.demo.app-merged_res-36:/mipmap-xhdpi_ic_launcher.png.flat",
         "source": "com.demo.app-main-37:/mipmap-xhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.demo.app-merged_res-36:/drawable-mdpi_src_assets_images_cameraicon.png.flat",
+        "source": "com.demo.app-react-31:/drawable-mdpi/src_assets_images_cameraicon.png"
     },
     {
         "merged": "com.demo.app-merged_res-36:/mipmap-xxhdpi_ic_launcher_round.png.flat",
