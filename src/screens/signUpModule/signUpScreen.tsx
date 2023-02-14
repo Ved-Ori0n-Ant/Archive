@@ -11,16 +11,16 @@ import auth from '@react-native-firebase/auth';
 import uuid from 'react-native-uuid';
 import { db } from "../../../firebase-config";
 import { ref, push, onValue, update, remove } from 'firebase/database';
+import { useNavigation } from "@react-navigation/native";
+import { MainNavigatorType } from "../../../App";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 // import { Button } from "@mui/material";
 
-interface Navgation {
-    navigate(destination?: string, params?: any): void;
-}
 
-
-const SecondaryScreen = ({navigation}: {navigation: Navgation}) => {
+const SecondaryScreen = () => {
     // const navigation = useNavigation();
     const validator = fieldValidator();
+    const navigation = useNavigation<NativeStackNavigationProp<MainNavigatorType>>()
     const {
       name,
       setName,
@@ -44,15 +44,6 @@ const SecondaryScreen = ({navigation}: {navigation: Navgation}) => {
       phoneNumberValidator,
     } = validator;
     const addToDatabase = async() => {
-        // let data = {
-        //     id: uuid.v4(),
-        //     name: name,
-        //     email: email,
-        //     password: password,
-        //     phoneNumber: phoneNumber,
-        // }
-        // push(ref( db, '/user/'), {data})
-
         push(ref(db, '/user/'), {
             id: uuid.v4(),
             name: name,
@@ -60,12 +51,6 @@ const SecondaryScreen = ({navigation}: {navigation: Navgation}) => {
             password: password,
             phoneNumber: phoneNumber,
         })
-
-        // Doubtful -------------------------------------------------------------------------------
-        // database()
-        //     .ref('/users/'+data.id)
-        //     .set({data})
-        //     .then((snapshot: any) => {console.log('Data added successfully!', snapshot.val())});
     }
     const signUpPressed = async () => {
         checkSubmit();
@@ -73,7 +58,6 @@ const SecondaryScreen = ({navigation}: {navigation: Navgation}) => {
         try {
             const createUser = await auth().createUserWithEmailAndPassword(email, password)
             console.log('email: ', email, 'password: ', password, 'phone-number: ', phoneNumber)
-            // navigation.navigate('Landing Page', {userEmail: `${email}`, userPhoneNumber: `${phoneNumber}`})
             navigation.navigate('Landing Page')
         } catch (err) {
             console.log(err)

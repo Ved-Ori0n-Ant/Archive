@@ -40,6 +40,10 @@
         "source": "com.demo.app-react-31:/drawable-xhdpi/node_modules_reactnavigation_elements_src_assets_backicon.png"
     },
     {
+        "merged": "com.demo.app-merged_res-36:/drawable-mdpi_src_assets_images_logout.png.flat",
+        "source": "com.demo.app-react-31:/drawable-mdpi/src_assets_images_logout.png"
+    },
+    {
         "merged": "com.demo.app-merged_res-36:/mipmap-xxxhdpi_ic_launcher_round.png.flat",
         "source": "com.demo.app-main-37:/mipmap-xxxhdpi/ic_launcher_round.png"
     },

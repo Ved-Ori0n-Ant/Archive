@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native'
+import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator, TextInput } from 'react-native'
 import TextComponent from "../../customComponents/textComponent";
 import fieldValidator from "../signUpModule/signUpScreenValidator";
 import TextInputComponent from "../../customComponents/textInputComponent";
@@ -18,8 +18,6 @@ const PhoneSigninScreen = ({navigation}: {navigation: Navgation}) => {
     const [code, setCode] = useState('');
     const [isShownActivityIndicator, setIsShownActivityIndicator] = useState<boolean>(false)
     const {
-        password, 
-        setPassword, 
         phoneNumber,
         setPhoneNumber,
         phoneNumberValidator,
@@ -38,6 +36,14 @@ const PhoneSigninScreen = ({navigation}: {navigation: Navgation}) => {
         setTimeout(() => {
             setIsOTPGenerated(true)
             getVarificationCode(phoneNumber)
+            return (
+                <View>
+                  <ActivityIndicator
+                    animating={isShownActivityIndicator}
+                    size="large"
+                  />
+                </View>
+              );
         }, 3000)
     }
     const signinWithPhonePressed = async() => {
@@ -61,6 +67,7 @@ const PhoneSigninScreen = ({navigation}: {navigation: Navgation}) => {
                     textStyle = {styles.inputText} 
                     onChangeText = {(value) => {setPhoneNumber(value); phoneNumberValidator(value)}}
                     keyboardType = 'number-pad'
+                    value={phoneNumber}
                 />
                 {phoneNumberError !== '' ? (<TextComponent text={phoneNumberError} textStyle={styles.errorText} containerStyle = {styles.textInputContainer}/>):(null)}
                 { !isOTPGenerated ? 
@@ -69,19 +76,22 @@ const PhoneSigninScreen = ({navigation}: {navigation: Navgation}) => {
                         <TouchableOpacity style = {styles.homeScreenNavigationButton} onPress = {() => {generateOTP()}}>
                             <Text style = {styles.homeScreenNavigationButtonText}>Generate OTP</Text>
                         </TouchableOpacity>
-                        <View>
+                        {/* <View>
                             <ActivityIndicator animating = {isShownActivityIndicator} size = 'large' />
-                        </View> 
+                        </View>  */}
                     </>
                 ) : (
                     <>
-                        <TextInputComponent 
-                            placeholderText="Enter the OTP" 
-                            containerStyle = {styles.textInputContainer} 
-                            textStyle = {styles.inputText} 
-                            isTextPassword = {true} 
-                            onChangeText = {(value) => {setCode(value)}}
-                        />
+                        <View style = {styles.textInputContainer}>
+                            <TextInput 
+                                placeholder="Enter the OTP" 
+                                // containerStyle = {styles.textInputContainer} 
+                                style = {styles.inputText} 
+                                secureTextEntry = {true} 
+                                value = {code}
+                                onChangeText = {(value) => {setCode(value)}}
+                            />
+                        </View>
                         <TouchableOpacity style = {styles.homeScreenNavigationButton} onPress = {() => signinWithPhonePressed()}>
                             <Text style = {styles.homeScreenNavigationButtonText}>Sign in</Text>
                         </TouchableOpacity>
@@ -107,7 +117,7 @@ const PhoneSigninScreen = ({navigation}: {navigation: Navgation}) => {
 const styles = StyleSheet.create({
     homeScreenMainContainer: {
         flex: 1,
-        backgroundColor: '#c0c0c0',
+        backgroundColor: '#c0c0c00a',
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -122,6 +132,7 @@ const styles = StyleSheet.create({
         padding: 3,
         borderRadius: 16,
         backgroundColor: 'black',
+        marginTop: 23,
     },
     homeScreenNavigationButtonText: {
         padding: 7,
@@ -135,6 +146,7 @@ const styles = StyleSheet.create({
         width: '85%',
         marginVertical: 2,
         alignSelf: 'center',
+        borderBottomWidth: 1,
     },
     inputText: {
         fontSize: 14,
@@ -145,6 +157,7 @@ const styles = StyleSheet.create({
         color: 'red',
         fontWeight: 'bold',
         fontSize: 8,
+        textDecorationLine: 'none'
     },
     signupNavigator: {
         fontSize: 16,

@@ -12,7 +12,7 @@ export const UserCardComponent = (prop: UserCardComponentProp) => {
         <View style = {[styles.cardContainer, containerStyle]}>
             <View style = {{flex: 0, flexDirection: 'row', justifyContent: 'space-between', padding: 13}}>
                 <Text style={styles.userNameText}>{prop.userName}</Text>
-                <Image source = {require('../assets/images/messageIcon.png')} style = {{height: 20, width: 20}} />
+                <Image source = {require('../assets/images/messageIcon.png')} style = {{height: 25, width: 25}} />
             </View>
         </View>
     )
