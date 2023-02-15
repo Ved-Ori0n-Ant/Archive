@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.demo.app-mergeDebugResources-34:/values-pt/values-pt.xml",
+            "outputFile": "com.demo.app-mergeDebugResources-37:/values-pt/values-pt.xml",
             "map": [
                 {
                     "source": "/Users/pcs248/.gradle/caches/transforms-3/96c61b30a71c92f44fda6179b3429abb/transformed/browser-1.4.0/res/values-pt/values-pt.xml",

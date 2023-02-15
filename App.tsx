@@ -9,6 +9,7 @@ import PushNotificationDemo from "./src/screens/fireBase/notificationsModule/pus
 import ShowAllUser from "./src/screens/chatModule/allUserScreen";
 import ShowChat from "./src/screens/chatModule/showChatScreen";
 import AuthScreen from "./src/screens/authScreen";
+// import Example from "./src/screens/DummyTester/dummyLocation";
 // import AuthScreen from "./src/screens/authScreen";
 
 export type MainNavigatorType = {
@@ -28,6 +29,7 @@ function App(): JSX.Element {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
+        {/* <Stack.Screen name="uploadMapLocation" component={Example} /> */}
         <Stack.Screen name="User verification" component={AuthScreen} />
         <Stack.Screen name="Landing Page" component={HomeScreen} />
         <Stack.Screen name="Sign up Page" component={secondaryScreen} />

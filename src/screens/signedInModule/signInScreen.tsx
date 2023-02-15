@@ -40,7 +40,7 @@ const HomeScreen = () => {
       setErrorMessage("");
       setEmail("");
       setPassword("");
-      // navigation.navigate('Notifications')
+      navigation.navigate('Users Screen')
     } catch (err: any) {
       console.log(err);
       setErrorMessage(err.message);
