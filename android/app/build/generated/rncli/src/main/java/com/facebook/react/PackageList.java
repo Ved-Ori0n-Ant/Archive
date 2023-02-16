@@ -29,6 +29,8 @@ import io.invertase.firebase.firestore.ReactNativeFirebaseFirestorePackage;
 import io.invertase.firebase.messaging.ReactNativeFirebaseMessagingPackage;
 // @react-native-firebase/storage
 import io.invertase.firebase.storage.ReactNativeFirebaseStoragePackage;
+// react-native-geolocation-service
+import com.agontuk.RNFusedLocation.RNFusedLocationPackage;
 // react-native-gesture-handler
 import com.swmansion.gesturehandler.RNGestureHandlerPackage;
 // react-native-image-picker
@@ -99,6 +101,7 @@ public class PackageList {
       new ReactNativeFirebaseFirestorePackage(),
       new ReactNativeFirebaseMessagingPackage(),
       new ReactNativeFirebaseStoragePackage(),
+      new RNFusedLocationPackage(),
       new RNGestureHandlerPackage(),
       new ImagePickerPackage(),
       new MapsPackage(),

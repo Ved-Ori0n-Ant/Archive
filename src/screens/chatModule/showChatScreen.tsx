@@ -4,13 +4,14 @@ import { push, ref } from "firebase/database";
 import database from "@react-native-firebase/database";
 import { db } from "../../../firebase-config";
 import { useRoute } from "@react-navigation/native";
-import { Image, TouchableOpacity, View, StyleSheet, Platform, Linking } from "react-native";
+import { Image, TouchableOpacity, View, StyleSheet, Platform, Linking, PermissionsAndroid } from "react-native";
 import TextComponent from "../../customComponents/textComponent";
 import { CameraOptions, launchCamera, launchImageLibrary } from "react-native-image-picker";
 import uuid from 'react-native-uuid';
 import storage from '@react-native-firebase/storage';
-import { utils } from "@react-native-firebase/app";
+// import { utils } from "@react-native-firebase/app";
 import MapView from 'react-native-maps';
+import Geolocation from 'react-native-geolocation-service'
 
 const ShowChat = () => {
 
@@ -48,7 +49,6 @@ const ShowChat = () => {
       msgRef.off("value", subscribe);
     };
   }, []);
-
   //Handles onSend for text message
   const onSend = React.useCallback((messageArray: any[]) => {
     const myMsg = messageArray[0];
@@ -139,13 +139,85 @@ const ShowChat = () => {
   }, []);
 
   // All related to maps....
+
+  // Asking user permissions for location access
+  const requestLocationPermission = async() => {
+    try{
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          title: 'Geolocation Permission',
+          message: 'Can we access your location?',
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK'
+        }
+      )
+      console.log("granted", granted);
+      if (granted === "granted") {
+        console.log("Geolocation permission granted");
+        return true;
+      } else {
+        console.log("Geolocation reques is refused");
+        return false;
+      }
+    }
+    catch{(err: any) => {
+      console.log(err);
+      
+    };}
+  }
+
+  // Handles onSend method for map
+  // let location: any 
+  const getLocation = () => {
+    const result = requestLocationPermission();
+    result.then(async(res: any) => {
+      console.log(res, ':: is the res');
+      if(res){
+        Geolocation.getCurrentPosition(
+          position => {
+            console.log('position', position)
+            const myMsg = {
+              _id: uuid.v4(),
+            };
+            const msg = {
+              ...myMsg,
+              createdAt: new Date().getTime(),
+              location: position?.coords,
+              user: {
+                _id: params?.fromUserData[0]?.id,
+                name: params?.fromUserData[0].name,
+              },
+            };
+
+          // console.log(position, "@@@@@@@");
+
+          push(ref(db,"/chat/personalMessages/" +params?.fromUserData[0]?.id +"/" +params?.item?.id +"/"),{ msg });
+          push(ref(db,"/chat/personalMessages/" +params?.item?.id +"/" +params?.fromUserData[0]?.id +"/"),{ msg });
+          console.log(msg);
+            
+          },
+          error => {
+            console.log('Error ocuured::', error.code, error.message);
+          },
+          {enableHighAccuracy: true, timeout: 10000, maximumAge: 10000}
+        )
+      }
+    })
+  }
   
-  // Implpementation starts from here
+  // Creates a map view in gifted-chat message bubble
   const LocationView = (location: any) => {
+    console.log('latitude::', location.location.latitude, 'longitude::', location.location.longitude,  '::Please this happen::');
+    console.log('location passed to locationView:::::------->', location);
+    
+    
+    // Accesses the maps
     const openMaps = () => {
       const url: any = Platform.select({
-        ios: `http://maps.apple.com/?ll=${location.latitude},${location.longitude}`,
-        android: `http://maps.google.com/?q=${location.latitude},${location.longitude}`,
+        ios: `http://maps.apple.com/?ll=${location.location.latitude},${location.location.longitude}`,
+        android: `http://maps.google.com/?q=${location.location.latitude},${location.location.longitude}`,
       });
       Linking.canOpenURL(url)
         .then((supported: any) => {
@@ -158,18 +230,23 @@ const ShowChat = () => {
         );
     };
     return(
-      <TouchableOpacity>
+      <TouchableOpacity 
+        onPress={() => openMaps()} 
+        style={{height: 210, 
+        width: 210, 
+        backgroundColor: 'grey'
+      }}>
         <MapView 
           region={{
-            latitude: location.latitude,
-            longitude: location.longitude,
-            latitudeDelta: 45,
-            longitudeDelta: 45
+            latitude: location.location.latitude,
+            longitude: location.location.longitude,
+            latitudeDelta: 0.45,
+            longitudeDelta: 0.45
           }}
           scrollEnabled = {true}
           zoomEnabled = {true}
-          style={{height: 250, width: 250}}
-          mapType={'terrain'}
+          style={{height: 210, width: 210}}
+          // mapType={'terrain'}
         />
       </TouchableOpacity>
     )
@@ -190,44 +267,67 @@ const ShowChat = () => {
 
 
   //Returns gifted chat UI along with header which contains the reciever name
+  
   return (
+   
     <>
+
       {/* Header component which shows reciever's name */}
       <View style={styles.headerContainer}>
         <TextComponent text={params?.item?.name} />
       </View>
+
+
       {/* Gifted chat component */}
       <GiftedChat
         messages={messages}
-        onSend={(messages) => {
-          onSend(messages);
-        }}
-        // Refere line no. 118
-        // renderActions={renderActions}
+        onSend={(messages) => { onSend(messages)}}
+        // renderActions={renderActions}                                 <-- Refer line #239
         user={{ _id: params?.fromUserData[0]?.id }}
         isLoadingEarlier
         alwaysShowSend
-        renderInputToolbar={(props: any) => {
+        // Custom input toolbar
+        renderInputToolbar={(props: any) => {                          
           return ( 
-            <InputToolbar {...props}>
-              <View style={{flexDirection: 'row'}}>
-                <TouchableOpacity style = {styles.iconContainer} onPress = {() => {callCamera(messages)}} >
-                  <Image source = {require('../../assets/images/cameraIcon.png')} style={styles.cameraIcon} />
-                </TouchableOpacity>
-                <TouchableOpacity style = {styles.iconContainer} onPress = {() => {callGalery(messages)}} >
-                  <Image source = {require('../../assets/images/gallery.png')} style={styles.galleryIcon} />
-                </TouchableOpacity>
+            <InputToolbar {...props} containerStyle={{height: 50}}>
+              <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                {/* <View style={{flex: 0, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginRight: 5, marginTop: 5}}> */}
+                  <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+                    <TouchableOpacity style = {styles.iconContainer} onPress = {() => {callCamera(messages)}} >
+                      <Image source = {require('../../assets/images/cameraIcon.png')} style={styles.cameraIcon} />
+                    </TouchableOpacity>
+                    <TouchableOpacity style = {styles.iconContainer} onPress = {() => {callGalery(messages)}} >
+                      <Image source = {require('../../assets/images/gallery.png')} style={styles.galleryIcon} />
+                    </TouchableOpacity>
+                  </View>
+                  <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', flex: 0}}>
+                    <TouchableOpacity style = {styles.iconContainer} onPress = {() => {getLocation()}} >
+                      <Image source = {require('../../assets/images/locationIcon.png')} style={styles.locationIcon} />
+                    </TouchableOpacity>
+                  </View>
+                {/* </View> */}
                 <Send {...props}>
+                  {/* 
                   <View style = {styles.iconContainer}>
                     <Image source = {require('../../assets/images/messageIcon.png')} style={styles.messageIcon} />
-                  </View>
+                  </View> 
+                  */}
                 </Send>
               </View>
             </InputToolbar>
           );
         }}
         renderBubble={(props: any) => {
+          const {currentMessage} = props
+          // console.log('Current message', currentMessage);
+          
+          if(currentMessage.location){
+            console.log(currentMessage.location, '<-- Current message location -->');
+            
+            return(<LocationView location={currentMessage.location} />)
+          }
           return (
+            <>
             <Bubble
               {...props}
               wrapperStyle={{
@@ -239,12 +339,16 @@ const ShowChat = () => {
                   marginLeft: -4
                 },
               }}
-            />
+              />
+            </>
           );
         }}
       />
+      
     </>
+    
   );
+
 };
 
 const styles = StyleSheet.create({
@@ -265,13 +369,17 @@ const styles = StyleSheet.create({
   },
   // Below are self-explanatory
   cameraIcon: {
-    height:48, 
-    width:60
+    height: 48, 
+    width: 48
   },
   galleryIcon: { 
-    height: 20, 
-    width: 20, 
-    marginRight: 5 
+    height: 16, 
+    width: 16, 
+    marginRight: 5/2 
+  },
+  locationIcon: {
+    height: 35,
+    width: 35
   },
   messageIcon: {
     height:30, 
