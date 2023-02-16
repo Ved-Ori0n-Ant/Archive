@@ -20,7 +20,6 @@ const ShowChat = () => {
 
   // All constants and hooks
   const [messages, setMessages] = React.useState<any>([]);
-  const [modalVisible, setModalVisible] = React.useState<Boolean>(false)
   const route = useRoute();
   const params: any = route.params;
   const fileOption: CameraOptions = {mediaType: 'photo'}
@@ -285,7 +284,7 @@ const ShowChat = () => {
   const getContacts = () => {
     const result = requestContactPermission();
     result.then((res: any) => {
-      navigation.navigate('Contact Screen');
+      navigation.navigate('Contact Screen', params);
       // Create a modal here which lists all contacts
       // and let user select number(s) and push numbers on firebase
       // and fetch them and show in render method
@@ -323,7 +322,7 @@ const ShowChat = () => {
       <GiftedChat
         messages={messages}
         onSend={(messages) => { onSend(messages)}}
-        // renderActions={renderActions}                                 <-- Refer line #290
+        // renderActions={renderActions}                                 <-- Refer line #295
         user={{ _id: params?.fromUserData[0]?.id }}
         isLoadingEarlier
         alwaysShowSend

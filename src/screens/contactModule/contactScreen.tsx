@@ -4,11 +4,17 @@ import Contacts from "react-native-contacts";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { MainNavigatorType } from "../../../App";
 import { useNavigation } from "@react-navigation/native";
+import uuid from "react-native-uuid";
+import { push, ref } from "firebase/database";
+import { db } from "../../../firebase-config";
+import { useRoute } from "@react-navigation/native";
 
 const ShowContact = () => {
   
+  const route = useRoute();
   const [contacts, setContacts] = React.useState([]);
   const navigation = useNavigation<NativeStackNavigationProp<MainNavigatorType>>();
+  const params: any = route.params;
 
   React.useEffect(() => {
     Contacts.getAll().then((contacts: any) => {
@@ -16,12 +22,35 @@ const ShowContact = () => {
     });
   }, []);
 
+  const getContactOnFB = React.useCallback((contact: any) => {
+    console.log('contact ka object =-=-=->', contact);
+    
+    const myMsg = {
+      _id: uuid.v4(),
+    };
+    const msg = {
+      ...myMsg,
+      createdAt: new Date().getTime(),
+      contact: {
+        name: contact?.item?.displayName,
+        contactNumber: contact?.item?.phoneNumbers[0]?.number
+      },
+      user: {
+        _id: params?.fromUserData[0]?.id,
+        name: params?.fromUserData[0].name,
+      },
+    };
+    push( ref( db, "/chat/personalMessages/" + params?.fromUserData[0]?.id + "/" + params?.item?.id + "/" ), { msg });
+    push( ref( db, "/chat/personalMessages/" + params?.item?.id + "/" + params?.fromUserData[0]?.id + "/" ), { msg });
+    console.log(msg);
+  }, [])
+
   return (
     <FlatList
       data={contacts}
       renderItem={(item: any) => {
         return (
-          <TouchableOpacity style={styles.contactContainer} onPress={() => {}} >
+          <TouchableOpacity style={styles.contactContainer} onPress={() => {getContactOnFB(item)}} >
           <View>
             <View style={styles.placeholder}>
               <Text style={styles.txt}>{item?.item?.givenName[0]}</Text>
