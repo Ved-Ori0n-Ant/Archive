@@ -10,8 +10,7 @@ import com.facebook.react.defaults.DefaultReactNativeHost;
 import com.facebook.soloader.SoLoader;
 import java.util.List;
 import io.invertase.firebase.app.ReactNativeFirebaseAppPackage;
-// import com.demo.MainReactPackage;
-// import io.invertase.firebase.app.ReactNativeFirebaseAppPackage;
+import com.rt2zz.reactnativecontacts.ReactNativeContacts;
 
 
 public class MainApplication extends Application implements ReactApplication {

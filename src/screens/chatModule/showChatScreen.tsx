@@ -3,7 +3,7 @@ import { Bubble, GiftedChat, InputToolbar, Send } from "react-native-gifted-chat
 import { push, ref } from "firebase/database";
 import database from "@react-native-firebase/database";
 import { db } from "../../../firebase-config";
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { Image, TouchableOpacity, View, StyleSheet, Platform, Linking, PermissionsAndroid } from "react-native";
 import TextComponent from "../../customComponents/textComponent";
 import { CameraOptions, launchCamera, launchImageLibrary } from "react-native-image-picker";
@@ -11,15 +11,20 @@ import uuid from 'react-native-uuid';
 import storage from '@react-native-firebase/storage';
 // import { utils } from "@react-native-firebase/app";
 import MapView from 'react-native-maps';
-import Geolocation from 'react-native-geolocation-service'
+import Geolocation from 'react-native-geolocation-service';
+import Contacts from 'react-native-contacts';
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { MainNavigatorType } from "../../../App";
 
 const ShowChat = () => {
 
   // All constants and hooks
   const [messages, setMessages] = React.useState<any>([]);
+  const [modalVisible, setModalVisible] = React.useState<Boolean>(false)
   const route = useRoute();
   const params: any = route.params;
   const fileOption: CameraOptions = {mediaType: 'photo'}
+  const navigation = useNavigation<NativeStackNavigationProp<MainNavigatorType>>();
   const msgRef = database().ref(
     "/chat/personalMessages/" +
       params?.fromUserData[0]?.id +
@@ -138,6 +143,7 @@ const ShowChat = () => {
     console.log(msg);
   }, []);
 
+
   // All related to maps....
 
   // Asking user permissions for location access
@@ -158,7 +164,7 @@ const ShowChat = () => {
         console.log("Geolocation permission granted");
         return true;
       } else {
-        console.log("Geolocation reques is refused");
+        console.log("Geolocation request is refused");
         return false;
       }
     }
@@ -167,9 +173,7 @@ const ShowChat = () => {
       
     };}
   }
-
   // Handles onSend method for map
-  // let location: any 
   const getLocation = () => {
     const result = requestLocationPermission();
     result.then(async(res: any) => {
@@ -178,6 +182,7 @@ const ShowChat = () => {
         Geolocation.getCurrentPosition(
           position => {
             console.log('position', position)
+
             const myMsg = {
               _id: uuid.v4(),
             };
@@ -191,12 +196,10 @@ const ShowChat = () => {
               },
             };
 
-          // console.log(position, "@@@@@@@");
-
-          push(ref(db,"/chat/personalMessages/" +params?.fromUserData[0]?.id +"/" +params?.item?.id +"/"),{ msg });
-          push(ref(db,"/chat/personalMessages/" +params?.item?.id +"/" +params?.fromUserData[0]?.id +"/"),{ msg });
-          console.log(msg);
-            
+            push(ref(db,"/chat/personalMessages/" +params?.fromUserData[0]?.id +"/" +params?.item?.id +"/"),{ msg });
+            push(ref(db,"/chat/personalMessages/" +params?.item?.id +"/" +params?.fromUserData[0]?.id +"/"),{ msg });
+            console.log('--> Message pushed on firebase', msg);
+              
           },
           error => {
             console.log('Error ocuured::', error.code, error.message);
@@ -206,12 +209,8 @@ const ShowChat = () => {
       }
     })
   }
-  
   // Creates a map view in gifted-chat message bubble
   const LocationView = (location: any) => {
-    console.log('latitude::', location.location.latitude, 'longitude::', location.location.longitude,  '::Please this happen::');
-    console.log('location passed to locationView:::::------->', location);
-    
     
     // Accesses the maps
     const openMaps = () => {
@@ -252,6 +251,48 @@ const ShowChat = () => {
     )
   };
 
+  // All related to contacts....
+
+  // Contacts implementation starts from here
+  // Asking for contact permissions
+  const requestContactPermission = async() => {
+    try{
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
+        {
+          title: 'Contact Access Permission',
+          message: 'Can we access your contact list?',
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK'
+        }
+      )
+      console.log("granted", granted);
+      if (granted === "granted") {
+        console.log("Contact permission granted");
+        return true;
+      } else {
+        console.log("Contact request is refused");
+        return false;
+      }
+    }
+    catch{(err: any) => {
+      console.log(err);
+      
+    };}
+  }
+  // Handles onSend method for contacts
+  const getContacts = () => {
+    const result = requestContactPermission();
+    result.then((res: any) => {
+      navigation.navigate('Contact Screen');
+      // Create a modal here which lists all contacts
+      // and let user select number(s) and push numbers on firebase
+      // and fetch them and show in render method
+    })
+  }
+  // Contacts implementation ends here
+
   // This enables multiple actions access
   // const renderActions = (props: Readonly<ActionsProps>) => {
   //   return (
@@ -282,7 +323,7 @@ const ShowChat = () => {
       <GiftedChat
         messages={messages}
         onSend={(messages) => { onSend(messages)}}
-        // renderActions={renderActions}                                 <-- Refer line #239
+        // renderActions={renderActions}                                 <-- Refer line #290
         user={{ _id: params?.fromUserData[0]?.id }}
         isLoadingEarlier
         alwaysShowSend
@@ -299,6 +340,11 @@ const ShowChat = () => {
                     <TouchableOpacity style = {styles.iconContainer} onPress = {() => {callGalery(messages)}} >
                       <Image source = {require('../../assets/images/gallery.png')} style={styles.galleryIcon} />
                     </TouchableOpacity>
+                  <View style={styles.iconContainer}>
+                    <TouchableOpacity style = {styles.iconContainer} onPress = {() => {getContacts()}} >
+                      <Image source = {require('../../assets/images/contactIcon.png')} style={styles.contactIcon} />
+                    </TouchableOpacity>
+                  </View>
                   </View>
                   <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', flex: 0}}>
                     <TouchableOpacity style = {styles.iconContainer} onPress = {() => {getLocation()}} >
@@ -319,11 +365,8 @@ const ShowChat = () => {
         }}
         renderBubble={(props: any) => {
           const {currentMessage} = props
-          // console.log('Current message', currentMessage);
-          
+
           if(currentMessage.location){
-            console.log(currentMessage.location, '<-- Current message location -->');
-            
             return(<LocationView location={currentMessage.location} />)
           }
           return (
@@ -380,6 +423,10 @@ const styles = StyleSheet.create({
   locationIcon: {
     height: 35,
     width: 35
+  },
+  contactIcon: {
+    height: 50,
+    width: 50
   },
   messageIcon: {
     height:30, 

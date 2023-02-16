@@ -30,6 +30,7 @@
     "react": "18.2.0",
     "react-material-ui-carousel": "^3.4.2",
     "react-native": "0.71.1",
+    "react-native-contacts": "^7.0.5",
     "react-native-elements": "^3.4.3",
     "react-native-geolocation-service": "^5.3.1",
     "react-native-gesture-handler": "^2.9.0",
@@ -43,9 +44,11 @@
     "react-native-simple-toast": "^2.0.0",
     "react-native-svg": "^13.8.0",
     "react-native-svg-transformer": "^1.0.0",
+    "react-native-use-modal": "^1.0.1",
     "react-native-uuid": "^2.0.1",
     "react-native-vector-icons": "^9.2.0",
-    "react-redux": "^8.0.5"
+    "react-redux": "^8.0.5",
+    "redux-persist": "^6.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
