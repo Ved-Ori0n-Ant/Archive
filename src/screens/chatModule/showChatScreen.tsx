@@ -4,7 +4,7 @@ import { push, ref } from "firebase/database";
 import database from "@react-native-firebase/database";
 import { db } from "../../../firebase-config";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { Image, TouchableOpacity, View, StyleSheet, Platform, Linking, PermissionsAndroid } from "react-native";
+import { Image, TouchableOpacity, View, StyleSheet, Platform, Linking, PermissionsAndroid, Text } from "react-native";
 import TextComponent from "../../customComponents/textComponent";
 import { CameraOptions, launchCamera, launchImageLibrary } from "react-native-image-picker";
 import uuid from 'react-native-uuid';
@@ -367,6 +367,14 @@ const ShowChat = () => {
 
           if(currentMessage.location){
             return(<LocationView location={currentMessage.location} />)
+          }
+          if(currentMessage.contact){
+            return(
+              <>
+              <Text>{currentMessage.contact.name}</Text>
+              <Text>{currentMessage.contact.contactNumber}</Text>
+              </>
+            )
           }
           return (
             <>
