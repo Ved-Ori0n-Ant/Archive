@@ -1,5 +1,7 @@
 import React from "react";
 import {
+  Actions,
+  ActionsProps,
   Bubble,
   GiftedChat,
   InputToolbar,
@@ -110,19 +112,20 @@ const ShowChat = () => {
     console.log(msg);
   }, []);
 
+
   //All related to images....
 
   //Common method to add images on firebase storage
   const uploadToFirebase = async (imageName: string) => {
-    await storage().ref("personalMessageImages/").putFile(imageName);
+    await storage().ref(`personalMessageImages/`).putFile(imageName);
   };
   //Image-picker component to open camera
-  const callCamera = async (m: any[]) => {
-    await launchCamera(fileOption, async (callback: any) => {
+  const callCamera = (m: any[]) => {
+    launchCamera(fileOption,  (callback: any) => {
       if (callback.didCancel) {
         console.log("Cancelled image picker");
       } else if (callback.errorCode) {
-        console.log(callback.errorCode);
+        console.log(callback.errorCode, '~~~~');
       } else if (callback.assets) {
         // console.log("Uri from camera", callback.assets[0].uri);
         const imagePathString: any = callback?.assets[0]?.uri;
@@ -132,7 +135,7 @@ const ShowChat = () => {
           imagePathString.lastIndexOf("/") + 1
         );
         console.log("image name:::", imageName);
-        const url: any = await storage()
+        const url: any = storage()
           .ref(`personalMessageImages/${imageName}`)
           .getDownloadURL();
         // console.log('image url from firebase::::', url);
@@ -207,6 +210,7 @@ const ShowChat = () => {
     );
     console.log(msg);
   }, []);
+
 
   // All related to maps....
 
@@ -331,6 +335,7 @@ const ShowChat = () => {
     );
   };
 
+  
   // All related to contacts....
 
   // Asking for contact permissions
@@ -367,19 +372,16 @@ const ShowChat = () => {
       navigation.navigate("Contact Screen", params);
     });
   };
-
-  // This enables multiple actions access
-  // const renderActions = (props: Readonly<ActionsProps>) => {
-  //   return (
-  //     <Actions
-  //       {...props}
-  //       options={{
-  //         ["Select image"]: callGalery,
-  //       }}
-  //       onSend={args => console.log(args)}
-  //     />
-  //   );
-  // }
+  // Opens dial-pad
+  const openDialPad = (phoneNumber: any) => {
+    let tempNum = ''
+    if (Platform.OS == 'android'){
+      tempNum = `tel:${phoneNumber}`;
+    } else {
+      tempNum = `telprompt:${phoneNumber}`
+    }
+    Linking.openURL(tempNum);
+  }
 
   //Returns gifted chat UI along with header which contains the reciever name
 
@@ -396,7 +398,19 @@ const ShowChat = () => {
         onSend={(messages) => {
           onSend(messages);
         }}
-        // renderActions={renderActions}                                 <-- Refer line #37
+        renderActions={(props: Readonly<ActionsProps>) => {
+          return (
+            <Actions
+              {...props}
+              options={{
+                ["Share contact 📞"]: ()=>{getContacts()},
+                ["Share location 🧭"]: () => {getLocation()},
+                ["Send photos from gallery 📷"]: () => {callGalery(messages)}
+              }}
+              onSend={args => console.log(args)}
+            />
+          );
+        }}                                
         user={{ _id: params?.fromUserData[0]?.id }}
         isLoadingEarlier
         alwaysShowSend
@@ -430,7 +444,7 @@ const ShowChat = () => {
                       style={styles.cameraIcon}
                     />
                   </TouchableOpacity>
-                  <TouchableOpacity
+                  {/* <TouchableOpacity
                     style={styles.iconContainer}
                     onPress={() => {
                       callGalery(messages);
@@ -440,8 +454,8 @@ const ShowChat = () => {
                       source={require("../../assets/images/gallery.png")}
                       style={styles.galleryIcon}
                     />
-                  </TouchableOpacity>
-                  <View style={styles.iconContainer}>
+                  </TouchableOpacity> */}
+                  {/* <View style={styles.iconContainer}>
                     <TouchableOpacity
                       style={styles.iconContainer}
                       onPress={() => {
@@ -453,9 +467,9 @@ const ShowChat = () => {
                         style={styles.contactIcon}
                       />
                     </TouchableOpacity>
-                  </View>
+                  </View> */}
                 </View>
-                <View
+                {/* <View
                   style={{
                     flexDirection: "row",
                     justifyContent: "center",
@@ -474,14 +488,9 @@ const ShowChat = () => {
                       style={styles.locationIcon}
                     />
                   </TouchableOpacity>
-                </View>
+                </View> */}
                 {/* </View> */}
                 <Send {...props}>
-                  {/* 
-                  <View style = {styles.iconContainer}>
-                    <Image source = {require('../../assets/images/messageIcon.png')} style={styles.messageIcon} />
-                  </View> 
-                  */}
                 </Send>
               </View>
             </InputToolbar>
@@ -528,7 +537,7 @@ const ShowChat = () => {
                   </View>
                   <TouchableOpacity
                     style={styles.numberContainer}
-                    onLongPress={() => {}}
+                    onLongPress={() => {openDialPad(currentMessage.contact.contactNumber)}}
                   >
                     <Text style={{ color: "blue" }}>
                       {currentMessage.contact.contactNumber}
