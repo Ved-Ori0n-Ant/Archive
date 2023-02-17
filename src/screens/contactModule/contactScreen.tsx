@@ -50,7 +50,7 @@ const ShowContact = () => {
       data={contacts}
       renderItem={(item: any) => {
         return (
-          <TouchableOpacity style={styles.contactContainer} onPress={() => {getContactOnFB(item)}} >
+          <TouchableOpacity style={styles.contactContainer} onPress={() => {getContactOnFB(item); navigation.goBack()}} >
           <View>
             <View style={styles.placeholder}>
               <Text style={styles.txt}>{item?.item?.givenName[0]}</Text>
