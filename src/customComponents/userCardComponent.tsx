@@ -20,17 +20,12 @@ export const UserCardComponent = (prop: UserCardComponentProp) => {
 
 const styles = StyleSheet.create({
     cardContainer: {
-        backgroundColor: '#afbfbf',
         justifyContent: 'center',
         padding: 23,
     },
     userNameText: {
         fontSize: 22,
         fontWeight: 'bold',
+        color: 'black'
     },
-    lastMsg: {
-        fontSize: 10,
-        fontWeight: '500',
-        alignSelf: 'baseline'
-    }
 })

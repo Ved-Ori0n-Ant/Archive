@@ -44,7 +44,7 @@ const ShowChat = () => {
   const [messages, setMessages] = React.useState<any>([]);
   const [recieverMessages, setRecieverMessages] = React.useState<any>([]);
   const [messagesID, setMessagesID] = React.useState<any>([]);
-  const [messagesRecieverID, setRecieverMessagesID] = React.useState<any>([]);
+  const [recieverMessagesId, setRecieverMessagesID] = React.useState<any>([]);
   const route = useRoute();
   const params: any = route.params;
   const fileOption: CameraOptions = { mediaType: "photo" };
@@ -54,76 +54,98 @@ const ShowChat = () => {
   const reverseMsgRef = database().ref( "/chat/personalMessages/" + params?.item?.id + "/" + params?.fromUserData[0]?.id + "/" );
   const [modalVisible, setModalVisible] = React.useState<boolean>(false);
 
+//   Uncomment below to check all state values
+//   console.log('Sender messages: ', messages);
+//   console.log('Sender messagesID: ', messagesID);
+//   console.log('Reciever messages: ', recieverMessages);
+//   console.log('Reciever messagesID: ', recieverMessagesId);
+  
+  console.log('Execution starts')
+
 
   // All related to text....
 
   // Takes new message and pushes it to the tempArray
   React.useEffect(() => {
-    const subscribe = msgRef.on("value", (snapshot) => {
-      let tempArray: any[] = [];
+    // For forward path
+    const subscribeForward = msgRef.on("value", (snapshot) => {
+      let rawArr: any[] = [];
       let tempSpreader: any = { ...snapshot.val() };
-      setMessagesID(Object.keys(tempSpreader))
-      let tempIdStripped: any = Object.values(tempSpreader);
+      Object.entries(tempSpreader).forEach((element: any) => {
+        rawArr.push(element)
+      })
+      rawArr.sort(function(a, b) {
+        return b[1].msg.createdAt - a[1].msg.createdAt;
+      })
+      let sortedTempSpreader = Object.fromEntries(rawArr)
+      setMessagesID(Object.keys(sortedTempSpreader))
+      let tempIdStripped: any = Object.values(sortedTempSpreader);
+      let tempArray: any[] = [];
       tempIdStripped.forEach((singleMsg: any) => {
         tempArray.push(singleMsg.msg);
-      });
-      tempArray.sort(function (a, b) {
-        return b.createdAt - a.createdAt;
       });
       setMessages(tempArray);
     });
-    const sub = reverseMsgRef.on("value", (snapshot) => {
-      let tempArray: any[] = [];
+    // For reverse path
+    const subscribeReverse = reverseMsgRef.on("value", (snapshot) => {
+      let rawArr: any[] = [];
       let tempSpreader: any = { ...snapshot.val() };
-      setRecieverMessagesID(Object.keys(tempSpreader))
-      let tempIdStripped: any = Object.values(tempSpreader);
+      Object.entries(tempSpreader).forEach((element: any) => {
+        rawArr.push(element)
+      })
+      rawArr.sort(function(a, b) {
+        return b[1].msg.createdAt - a[1].msg.createdAt;
+      })
+      let sortedTempSpreader = Object.fromEntries(rawArr)
+      setRecieverMessagesID(Object.keys(sortedTempSpreader))
+      let tempIdStripped: any = Object.values(sortedTempSpreader);
+      let tempArray: any[] = [];
       tempIdStripped.forEach((singleMsg: any) => {
         tempArray.push(singleMsg.msg);
-      });
-      tempArray.sort(function (a, b) {
-        return b.createdAt - a.createdAt;
       });
       setRecieverMessages(tempArray);
     });
     return () => {
-      msgRef.off("value", subscribe);
-      reverseMsgRef.off("value", sub);
+      msgRef.off("value", subscribeForward);
+      reverseMsgRef.off("value", subscribeReverse);
     };
   }, []);
   // Handles on long press on text
   const chatOnLongPressed = (message: any) => {
     Alert.alert('Delete message?', '', [
       {text: 'Cancel', onPress:() => {console.log('cancel is pressed')}, style: 'cancel'},
-      {text: 'Delete for all', onPress:() => {deleteSenderRef(message); deleteRecieverRef(message)}, style: 'default'},
-      {text: 'Delete for me', onPress:() => {deleteSenderRef(message)}, style: 'default'},
+      {text: 'Delete for all', onPress:() => {deleteForAll(message)}, style: 'default'},
+      {text: 'Delete for me', onPress:() => {deleteForMe(message)}, style: 'default'},
     ])
   }
-  // Deletes sender reference
-  const deleteSenderRef = (message: any) => {
+  // Deletes sender and reciever reference
+  const deleteForAll = (message: any) => {
     var ind = 0;
     for(var i=0; i<messages.length; i++){
-      if(messages[i] == message){
+      if(messages[i] === message){
+        ind = i;
+      }
+    }
+    // You can directly call 'deleteForMe(message)' instead of writing below line
+    // But to maintain consistency, I wrote it
+    database().ref("chat/personalMessages/" + params?.item?.id + '/' + params?.fromUserData[0]?.id + '/' + recieverMessagesId[ind] + '/').remove()
+    database().ref("chat/personalMessages/" + params?.fromUserData[0]?.id + '/' + params?.item?.id + '/' + messagesID[ind] + '/').remove()
+  }
+  // Delete sender reference
+  const deleteForMe = (message: any) => {
+    var ind = 0;
+    for(var i=0; i<messages.length; i++){
+      if(messages[i] === message){
         ind = i;
       }
     }
     database().ref("chat/personalMessages/" + params?.fromUserData[0]?.id + '/' + params?.item?.id + '/' + messagesID[ind] + '/').remove()
   }
-  // Deletes reciever reference
-  const deleteRecieverRef = (message: any) => {
-    var ind = 0;
-    for(var i=0; i<recieverMessages.length; i++) {
-      if(recieverMessages[i] == message){
-        ind = i;
-      }
-    }
-    database().ref('chat/personalMessages/' + params?.item?.id + '/' + params?.fromUserData[0]?.id + '/' + messagesRecieverID[ind] + '/').remove()
-  }
-  // Handles clear chat
+  // Handles clear chat for sender
   const clearChat = () => {
     msgRef.remove();
     // reverseMsgRef.remove();
   }
-  
   //Handles onSend for text message
   const onSend = React.useCallback((messageArray: any[]) => {
     const myMsg = messageArray[0];
