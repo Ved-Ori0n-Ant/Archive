@@ -21,6 +21,8 @@ import {
   PermissionsAndroid,
   Text,
   useWindowDimensions,
+  Alert,
+  Modal,
 } from "react-native";
 import TextComponent from "../../customComponents/textComponent";
 import {
@@ -40,19 +42,18 @@ import moment from  'moment';
 const ShowChat = () => {
   // All constants and hooks
   const [messages, setMessages] = React.useState<any>([]);
+  const [recieverMessages, setRecieverMessages] = React.useState<any>([]);
+  const [messagesID, setMessagesID] = React.useState<any>([]);
+  const [messagesRecieverID, setRecieverMessagesID] = React.useState<any>([]);
   const route = useRoute();
   const params: any = route.params;
   const fileOption: CameraOptions = { mediaType: "photo" };
   const WIDTH = useWindowDimensions().width;
-  const navigation =
-    useNavigation<NativeStackNavigationProp<MainNavigatorType>>();
-  const msgRef = database().ref(
-    "/chat/personalMessages/" +
-      params?.fromUserData[0]?.id +
-      "/" +
-      params?.item?.id +
-      "/"
-  );
+  const navigation = useNavigation<NativeStackNavigationProp<MainNavigatorType>>();
+  const msgRef = database().ref( "/chat/personalMessages/" + params?.fromUserData[0]?.id + "/" + params?.item?.id + "/" );
+  const reverseMsgRef = database().ref( "/chat/personalMessages/" + params?.item?.id + "/" + params?.fromUserData[0]?.id + "/" );
+  const [modalVisible, setModalVisible] = React.useState<boolean>(false);
+
 
   // All related to text....
 
@@ -61,6 +62,7 @@ const ShowChat = () => {
     const subscribe = msgRef.on("value", (snapshot) => {
       let tempArray: any[] = [];
       let tempSpreader: any = { ...snapshot.val() };
+      setMessagesID(Object.keys(tempSpreader))
       let tempIdStripped: any = Object.values(tempSpreader);
       tempIdStripped.forEach((singleMsg: any) => {
         tempArray.push(singleMsg.msg);
@@ -70,10 +72,58 @@ const ShowChat = () => {
       });
       setMessages(tempArray);
     });
+    const sub = reverseMsgRef.on("value", (snapshot) => {
+      let tempArray: any[] = [];
+      let tempSpreader: any = { ...snapshot.val() };
+      setRecieverMessagesID(Object.keys(tempSpreader))
+      let tempIdStripped: any = Object.values(tempSpreader);
+      tempIdStripped.forEach((singleMsg: any) => {
+        tempArray.push(singleMsg.msg);
+      });
+      tempArray.sort(function (a, b) {
+        return b.createdAt - a.createdAt;
+      });
+      setRecieverMessages(tempArray);
+    });
     return () => {
       msgRef.off("value", subscribe);
+      reverseMsgRef.off("value", sub);
     };
   }, []);
+  // Handles on long press on text
+  const chatOnLongPressed = (message: any) => {
+    Alert.alert('Delete message?', '', [
+      {text: 'Cancel', onPress:() => {console.log('cancel is pressed')}, style: 'cancel'},
+      {text: 'Delete for all', onPress:() => {deleteSenderRef(message); deleteRecieverRef(message)}, style: 'default'},
+      {text: 'Delete for me', onPress:() => {deleteSenderRef(message)}, style: 'default'},
+    ])
+  }
+  // Deletes sender reference
+  const deleteSenderRef = (message: any) => {
+    var ind = 0;
+    for(var i=0; i<messages.length; i++){
+      if(messages[i] == message){
+        ind = i;
+      }
+    }
+    database().ref("chat/personalMessages/" + params?.fromUserData[0]?.id + '/' + params?.item?.id + '/' + messagesID[ind] + '/').remove()
+  }
+  // Deletes reciever reference
+  const deleteRecieverRef = (message: any) => {
+    var ind = 0;
+    for(var i=0; i<recieverMessages.length; i++) {
+      if(recieverMessages[i] == message){
+        ind = i;
+      }
+    }
+    database().ref('chat/personalMessages/' + params?.item?.id + '/' + params?.fromUserData[0]?.id + '/' + messagesRecieverID[ind] + '/').remove()
+  }
+  // Handles clear chat
+  const clearChat = () => {
+    msgRef.remove();
+    // reverseMsgRef.remove();
+  }
+  
   //Handles onSend for text message
   const onSend = React.useCallback((messageArray: any[]) => {
     const myMsg = messageArray[0];
@@ -335,7 +385,7 @@ const ShowChat = () => {
     );
   };
 
-  
+
   // All related to contacts....
 
   // Asking for contact permissions
@@ -384,17 +434,93 @@ const ShowChat = () => {
   }
 
   //Returns gifted chat UI along with header which contains the reciever name
-
   return (
     <>
       {/* Header component which shows reciever's name */}
-      <View style={styles.headerContainer}>
+      <View style={[styles.headerContainer, { justifyContent: "space-between" }]}>
         <TextComponent text={params?.item?.name} />
+        <Modal
+          animationType="fade"
+          visible={modalVisible}
+          transparent={true}
+          onRequestClose={() => {
+            setModalVisible(false);
+          }}
+          style={{ flex: 1, borderWidth: 1, margin: 33, backgroundColor: '#aaa' }}
+        >
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: '#acc0ac'
+            }}
+          >
+            <TouchableOpacity
+              style={styles.iconContainer}
+              onPress={() => {
+                callCamera(messages);
+              }}
+            >
+              <Image
+                source={require("../../assets/images/cameraIcon.png")}
+                style={styles.cameraIcon}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.iconContainer}
+              onPress={() => {
+                callGalery(messages);
+              }}
+            >
+              <Image
+                source={require("../../assets/images/gallery.png")}
+                style={styles.galleryIcon}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.iconContainer}
+              onPress={() => {
+                getContacts();
+              }}
+            >
+              <Image
+                source={require("../../assets/images/contactIcon.png")}
+                style={styles.contactIcon}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.iconContainer}
+              onPress={() => {
+                getLocation();
+              }}
+            >
+              <Image
+                source={require("../../assets/images/locationIcon.png")}
+                style={styles.locationIcon}
+              />
+            </TouchableOpacity>
+          </View>
+        </Modal>
+        <TouchableOpacity
+          style={{
+            justifyContent: "space-evenly",
+            margin: 10,
+          }}
+          onPress={() => {
+            setModalVisible(true);
+          }}
+        >
+          <Image source={require("../../assets/images/menuIcon.png")} />
+        </TouchableOpacity>
       </View>
 
       {/* Gifted chat component */}
-      <GiftedChat
+      <GiftedChat 
         messages={messages}
+        user={{ _id: params?.fromUserData[0]?.id }}
+        isLoadingEarlier
+        alwaysShowSend
         onSend={(messages) => {
           onSend(messages);
         }}
@@ -403,17 +529,20 @@ const ShowChat = () => {
             <Actions
               {...props}
               options={{
-                ["Share contact 📞"]: ()=>{getContacts()},
-                ["Share location 🧭"]: () => {getLocation()},
-                ["Send photos from gallery 📷"]: () => {callGalery(messages)}
+                ["Share contact 📞"]: () => {
+                  getContacts();
+                },
+                ["Share location 🧭"]: () => {
+                  getLocation();
+                },
+                ["Send photos from gallery 📷"]: () => {
+                  callGalery(messages);
+                },
               }}
-              onSend={args => console.log(args)}
+              onSend={(args) => console.log(args)}
             />
           );
-        }}                                
-        user={{ _id: params?.fromUserData[0]?.id }}
-        isLoadingEarlier
-        alwaysShowSend
+        }}
         // Custom input toolbar
         renderInputToolbar={(props: any) => {
           return (
@@ -444,117 +573,72 @@ const ShowChat = () => {
                       style={styles.cameraIcon}
                     />
                   </TouchableOpacity>
-                  {/* <TouchableOpacity
-                    style={styles.iconContainer}
-                    onPress={() => {
-                      callGalery(messages);
-                    }}
-                  >
-                    <Image
-                      source={require("../../assets/images/gallery.png")}
-                      style={styles.galleryIcon}
-                    />
-                  </TouchableOpacity> */}
-                  {/* <View style={styles.iconContainer}>
-                    <TouchableOpacity
-                      style={styles.iconContainer}
-                      onPress={() => {
-                        getContacts();
-                      }}
-                    >
-                      <Image
-                        source={require("../../assets/images/contactIcon.png")}
-                        style={styles.contactIcon}
-                      />
-                    </TouchableOpacity>
-                  </View> */}
                 </View>
-                {/* <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    flex: 0,
-                  }}
-                >
-                  <TouchableOpacity
-                    style={styles.iconContainer}
-                    onPress={() => {
-                      getLocation();
-                    }}
-                  >
-                    <Image
-                      source={require("../../assets/images/locationIcon.png")}
-                      style={styles.locationIcon}
-                    />
-                  </TouchableOpacity>
-                </View> */}
-                {/* </View> */}
-                <Send {...props}>
-                </Send>
+                <Send {...props} />
               </View>
             </InputToolbar>
           );
         }}
         renderBubble={(props: any) => {
           const { currentMessage } = props;
-
+          // If message contains location attribute, then share location
           if (currentMessage.location) {
             return (
-              <View style = {{backgroundColor: '#c0c0c0', padding: 7, borderRadius: 10, marginVertical: 2, marginLeft: -4, marginRight: 1}}>
+              <TouchableOpacity
+                style={styles.mapContainer}
+                onLongPress={() => {
+                  chatOnLongPressed(currentMessage);
+                }}
+              >
                 <LocationView location={currentMessage.location} />
-                <Text
-                  style={{
-                    textAlign: "right",
-                    marginRight: 5,
-                    opacity: 0.7,
-                    fontSize: 10,
-                    marginTop: 2
-                  }}
-                >
+                <Text style={styles.timeStamp}>
                   {moment(currentMessage.createdAt).format("h:mm a")}
                 </Text>
-              </View>
+              </TouchableOpacity>
             );
           }
+          // If message contains contact attribute, then share contact
           if (currentMessage.contact) {
             return (
-              <>
-                <View
-                  style={[styles.contactContainer, {width: WIDTH / 2.1},]}
-                >
-                  <View
-                    style={styles.nameContainer}
-                  >
+              <TouchableOpacity
+                onPress={() => {
+                  chatOnLongPressed(currentMessage);
+                }}
+              >
+                <View style={[styles.contactContainer, { width: WIDTH / 2.1 }]}>
+                  <View style={styles.nameContainer}>
                     <Text style={{ fontSize: 18, margin: 7, marginBottom: 1 }}>
                       {currentMessage.contact.name}
                     </Text>
                     {/* Add time stamp here ..... */}
-                    <Text style={{textAlign: 'right', marginRight: 5, opacity: 0.7, fontSize: 10}}>
-                      {moment(currentMessage.createdAt).format('h:mm a')}
+                    <Text style={styles.timeStamp}>
+                      {moment(currentMessage.createdAt).format("h:mm a")}
                     </Text>
-
                   </View>
                   <TouchableOpacity
                     style={styles.numberContainer}
-                    onLongPress={() => {openDialPad(currentMessage.contact.contactNumber)}}
+                    onLongPress={() => {
+                      openDialPad(currentMessage.contact.contactNumber);
+                    }}
                   >
                     <Text style={{ color: "blue" }}>
                       {currentMessage.contact.contactNumber}
                     </Text>
                   </TouchableOpacity>
                 </View>
-              </>
+              </TouchableOpacity>
             );
           }
           return (
             <>
               <Bubble
                 {...props}
+                onLongPress={() => {
+                  chatOnLongPressed(currentMessage);
+                }}
                 wrapperStyle={{
                   right: {
-                    backgroundColor: "#3d73dda0",
-                    marginRight: 1
+                    marginRight: 1,
                   },
                   left: {
                     backgroundColor: "#72f5c9",
@@ -571,7 +655,6 @@ const ShowChat = () => {
 };
 
 const styles = StyleSheet.create({
-  //Header styling
   headerContainer: {
     backgroundColor: "#afcfcf",
     width: "100%",
@@ -579,13 +662,20 @@ const styles = StyleSheet.create({
     height: "auto",
     maxHeight: 180,
     justifyContent: "center",
+    flexDirection: 'row'
   },
-  // All views containing icons' styling
+  mapContainer: {
+    backgroundColor: "#c0c0c0",
+    padding: 7,
+    borderRadius: 10,
+    marginVertical: 2,
+    marginLeft: -4,
+    marginRight: 1,
+  },
   iconContainer: {
     justifyContent: "center",
     alignItems: "center",
   },
-  // Below are self-explanatory
   cameraIcon: {
     height: 48,
     width: 48,
@@ -613,7 +703,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",
-    marginVertical: 2,
+    marginVertical: 3,
     marginLeft: -4,
     marginRight: 1,
     backgroundColor: "#c0c0c0",
@@ -633,6 +723,13 @@ const styles = StyleSheet.create({
     width: "100%",
     justifyContent: "center",
     alignItems: "center",
+  },
+  timeStamp: {
+    textAlign: "right",
+    marginRight: 5,
+    opacity: 0.7,
+    fontSize: 10,
+    marginTop: 4
   },
 });
 
