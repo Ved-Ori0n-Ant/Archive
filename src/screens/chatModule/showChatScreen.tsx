@@ -49,10 +49,12 @@ const ShowChat = () => {
   const params: any = route.params;
   const fileOption: CameraOptions = { mediaType: "photo" };
   const WIDTH = useWindowDimensions().width;
+  const HEIGHT = useWindowDimensions().height;
   const navigation = useNavigation<NativeStackNavigationProp<MainNavigatorType>>();
   const msgRef = database().ref( "/chat/personalMessages/" + params?.fromUserData[0]?.id + "/" + params?.item?.id + "/" );
   const reverseMsgRef = database().ref( "/chat/personalMessages/" + params?.item?.id + "/" + params?.fromUserData[0]?.id + "/" );
   const [modalVisible, setModalVisible] = React.useState<boolean>(false);
+  const [textSelectedModalVisible, setTextSelectedModalVisible] = React.useState<boolean>(false);
 
 //   Uncomment below to check all state values
 //   console.log('Sender messages: ', messages);
@@ -112,6 +114,7 @@ const ShowChat = () => {
   }, []);
   // Handles on long press on text
   const chatOnLongPressed = (message: any) => {
+    // setTextSelectedModalVisible(true)
     Alert.alert('Delete message?', '', [
       {text: 'Cancel', onPress:() => {console.log('cancel is pressed')}, style: 'cancel'},
       {text: 'Delete for all', onPress:() => {deleteForAll(message)}, style: 'default'},
@@ -389,19 +392,19 @@ const ShowChat = () => {
     return (
       <TouchableOpacity
         onPress={() => openMaps()}
-        style={{ height: 210, width: 210, backgroundColor: "grey" }}
+        style={{ height: HEIGHT/4, justifyContent: 'center', alignItems: 'center' }}
       >
         <MapView
           region={{
             latitude: location.location.latitude,
             longitude: location.location.longitude,
-            latitudeDelta: 0.45,
-            longitudeDelta: 0.45,
+            latitudeDelta: 3,
+            longitudeDelta: 3,
           }}
           scrollEnabled={true}
           zoomEnabled={true}
-          style={{ height: 210, width: 210 }}
-          // mapType={'terrain'}
+          style={{ height: HEIGHT/4.2, width: WIDTH/2.3 }}
+          mapType={'terrain'}
         />
       </TouchableOpacity>
     );
@@ -459,7 +462,9 @@ const ShowChat = () => {
   return (
     <>
       {/* Header component which shows reciever's name */}
-      <View style={[styles.headerContainer, { justifyContent: "space-between" }]}>
+      <View
+        style={[styles.headerContainer, { justifyContent: "space-between" }]}
+      >
         <TextComponent text={params?.item?.name} />
         <Modal
           animationType="fade"
@@ -468,27 +473,18 @@ const ShowChat = () => {
           onRequestClose={() => {
             setModalVisible(false);
           }}
-          style={{ flex: 1, borderWidth: 1, margin: 33, backgroundColor: '#aaa' }}
         >
           <View
             style={{
               flexDirection: "row",
-              justifyContent: "center",
+              justifyContent: "space-around",
               alignItems: "center",
-              backgroundColor: '#acc0ac'
+              backgroundColor: "#ddd",
+              height: WIDTH / 5,
+              borderBottomEndRadius: 30,
+              borderBottomStartRadius: 30,
             }}
           >
-            <TouchableOpacity
-              style={styles.iconContainer}
-              onPress={() => {
-                callCamera(messages);
-              }}
-            >
-              <Image
-                source={require("../../assets/images/cameraIcon.png")}
-                style={styles.cameraIcon}
-              />
-            </TouchableOpacity>
             <TouchableOpacity
               style={styles.iconContainer}
               onPress={() => {
@@ -503,17 +499,6 @@ const ShowChat = () => {
             <TouchableOpacity
               style={styles.iconContainer}
               onPress={() => {
-                getContacts();
-              }}
-            >
-              <Image
-                source={require("../../assets/images/contactIcon.png")}
-                style={styles.contactIcon}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.iconContainer}
-              onPress={() => {
                 getLocation();
               }}
             >
@@ -522,8 +507,34 @@ const ShowChat = () => {
                 style={styles.locationIcon}
               />
             </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.iconContainer}
+              onPress={() => {
+                getContacts();
+              }}
+            >
+              <Image
+                source={require("../../assets/images/contactIcon.png")}
+                style={styles.contactIcon}
+              />
+            </TouchableOpacity>
           </View>
         </Modal>
+        {/* <Modal
+          visible={textSelectedModalVisible}
+          animationType='fade'
+          transparent={true}
+          onRequestClose={() => {
+            setTextSelectedModalVisible(false);
+          }}
+        >
+          <TouchableOpacity>
+          <Image
+                source={require("../../assets/images/delete.png")}
+                style={styles.contactIcon}
+          />
+          </TouchableOpacity>
+        </Modal> */}
         <TouchableOpacity
           style={{
             justifyContent: "space-evenly",
@@ -538,7 +549,7 @@ const ShowChat = () => {
       </View>
 
       {/* Gifted chat component */}
-      <GiftedChat 
+      <GiftedChat
         messages={messages}
         user={{ _id: params?.fromUserData[0]?.id }}
         isLoadingEarlier
@@ -546,25 +557,25 @@ const ShowChat = () => {
         onSend={(messages) => {
           onSend(messages);
         }}
-        renderActions={(props: Readonly<ActionsProps>) => {
-          return (
-            <Actions
-              {...props}
-              options={{
-                ["Share contact 📞"]: () => {
-                  getContacts();
-                },
-                ["Share location 🧭"]: () => {
-                  getLocation();
-                },
-                ["Send photos from gallery 📷"]: () => {
-                  callGalery(messages);
-                },
-              }}
-              onSend={(args) => console.log(args)}
-            />
-          );
-        }}
+        // renderActions={(props: Readonly<ActionsProps>) => {
+        //   return (
+        //     <Actions
+        //       {...props}
+        //       options={{
+        //         ["Share contact 📞"]: () => {
+        //           getContacts();
+        //         },
+        //         ["Share location 🧭"]: () => {
+        //           getLocation();
+        //         },
+        //         ["Send photos from gallery 📷"]: () => {
+        //           callGalery(messages);
+        //         },
+        //       }}
+        //       onSend={(args) => console.log(args)}
+        //     />
+        //   );
+        // }}
         // Custom input toolbar
         renderInputToolbar={(props: any) => {
           return (
@@ -606,30 +617,97 @@ const ShowChat = () => {
           // If message contains location attribute, then share location
           if (currentMessage.location) {
             return (
-              <TouchableOpacity
-                style={styles.mapContainer}
+              <Bubble
+                {...props}
+                user={{ _id: params?.fromUserData[0]?.id }}
                 onLongPress={() => {
                   chatOnLongPressed(currentMessage);
                 }}
-              >
-                <LocationView location={currentMessage.location} />
-                <Text style={styles.timeStamp}>
-                  {moment(currentMessage.createdAt).format("h:mm a")}
-                </Text>
-              </TouchableOpacity>
+                wrapperStyle={{
+                  right: {
+                    width: WIDTH / 2,
+                  },
+                  left: {
+                    width: WIDTH / 2,
+                    backgroundColor: "#72f5c9",
+                  },
+                }}
+                renderCustomView={() => {
+                  return (
+                    <View style={styles.mapContainer}>
+                      <LocationView location={currentMessage.location} />
+                      {/* Add time stamp here ..... */}
+                      {/* <Text style={styles.timeStamp}>
+                        {moment(currentMessage.createdAt).format("h:mm a")}
+                      </Text> */}
+                    </View>
+                  );
+                }}
+              />
             );
           }
           // If message contains contact attribute, then share contact
           if (currentMessage.contact) {
+            // If you want contact as a bubble, uncomment below snippet
+            // return(
+            //   <Bubble
+            //     {...props}
+            //     user={{_id: params?.fromUserData[0]?.id}}
+            //     wrapperStyle={{
+            //       left: {
+            //         // width: WIDTH/2,
+            //         padding: 6,
+            //         backgroundColor: "#72f5c9",
+            //       },
+            //       right: {
+            //         // width: WIDTH/2
+            //         padding: 6
+            //       }
+            //     }}
+            //     onLongPress={() => {
+            //       chatOnLongPressed(currentMessage)
+            //     }}
+            //     renderCustomView={()=>{
+            //       return (
+            //         <View style={{justifyContent: 'center', alignItems: 'center', padding:3}}>
+            //           <View style={[styles.contactContainer, { width: WIDTH / 2.2 }]}>
+            //             <View style={styles.nameContainer}>
+            //               <Text style={{ fontSize: 18, margin: 7 }}>
+            //                 {currentMessage.contact.name}
+            //               </Text>
+            //               {/* Add time stamp here ..... */}
+            //               {/* <Text style={styles.timeStamp}>
+            //                 {moment(currentMessage.createdAt).format("h:mm a")}
+            //               </Text> */}
+            //             </View>
+            //             <TouchableOpacity
+            //               style={styles.numberContainer}
+            //               onLongPress={() => {
+            //                 openDialPad(currentMessage.contact.contactNumber);
+            //               }}
+            //             >
+            //               <Text style={{ color: "blue" }}>
+            //                 {currentMessage.contact.contactNumber}
+            //               </Text>
+            //             </TouchableOpacity>
+            //           </View>
+            //         </View>
+            //       );
+            //     }}
+            //   />
+            // )
+            // And remove below code
             return (
-              <TouchableOpacity
-                onPress={() => {
-                  chatOnLongPressed(currentMessage);
+              <View
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                  padding: 3,
                 }}
               >
-                <View style={[styles.contactContainer, { width: WIDTH / 2.1 }]}>
+                <View style={[styles.contactContainer, { width: WIDTH / 2.2 }]}>
                   <View style={styles.nameContainer}>
-                    <Text style={{ fontSize: 18, margin: 7, marginBottom: 1 }}>
+                    <Text style={{ fontSize: 18, margin: 7 }}>
                       {currentMessage.contact.name}
                     </Text>
                     {/* Add time stamp here ..... */}
@@ -648,7 +726,7 @@ const ShowChat = () => {
                     </Text>
                   </TouchableOpacity>
                 </View>
-              </TouchableOpacity>
+              </View>
             );
           }
           return (
@@ -690,30 +768,28 @@ const styles = StyleSheet.create({
     backgroundColor: "#c0c0c0",
     padding: 7,
     borderRadius: 10,
-    marginVertical: 2,
-    marginLeft: -4,
-    marginRight: 1,
+    margin: 4,
   },
   iconContainer: {
     justifyContent: "center",
     alignItems: "center",
   },
   cameraIcon: {
-    height: 48,
-    width: 48,
+    height: 60,
+    width: 60,
   },
   galleryIcon: {
-    height: 16,
-    width: 16,
-    marginRight: 5 / 2,
+    height: 20,
+    width: 20,
   },
   locationIcon: {
-    height: 35,
-    width: 35,
+    height: 40,
+    width: 40,
+    marginLeft: 18
   },
   contactIcon: {
-    height: 50,
-    width: 50,
+    height: 60,
+    width: 60,
   },
   messageIcon: {
     height: 30,

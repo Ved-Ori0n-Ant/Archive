@@ -1,5 +1,5 @@
 import React from "react";
-import { FlatList, StyleSheet, Text, TouchableOpacity, View, } from "react-native";
+import { FlatList, Image, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View, } from "react-native";
 import Contacts from "react-native-contacts";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { MainNavigatorType } from "../../../App";
@@ -15,6 +15,8 @@ const ShowContact = () => {
   const [contacts, setContacts] = React.useState([]);
   const navigation = useNavigation<NativeStackNavigationProp<MainNavigatorType>>();
   const params: any = route.params;
+  const HEIGHT = useWindowDimensions().height;
+  const WIDTH = useWindowDimensions().width;
 
   React.useEffect(() => {
     Contacts.getAll().then((contacts: any) => {
@@ -50,25 +52,42 @@ const ShowContact = () => {
       data={contacts}
       renderItem={(item: any) => {
         return (
-          <TouchableOpacity style={styles.contactContainer} onPress={() => {getContactOnFB(item); navigation.goBack()}} >
-          <View>
-            <View style={styles.placeholder}>
-              <Text style={styles.txt}>{item?.item?.givenName[0]}</Text>
+          <TouchableOpacity
+            style={styles.contactContainer}
+            onPress={() => {
+              getContactOnFB(item);
+              navigation.goBack();
+            }}
+          >
+            <View>
+              <View style={styles.placeholder}>
+                <Text style={styles.txt}>{item?.item?.givenName[0]}</Text>
+              </View>
             </View>
-          </View>
-          <View style={styles.contactData}>
-            <Text style={styles.name}>
-              {item?.item?.givenName} {item?.item?.middleName && item.item?.middleName + ' '} 
-              {item?.item?.familyName}
-            </Text>
-            <Text style={styles.phoneNumber}>
-              {item?.item?.phoneNumbers[0]?.number}
-            </Text>
-          </View>
-        </TouchableOpacity>
+            <View style={styles.contactData}>
+              <Text style={styles.name}>
+                {item?.item?.givenName}{" "}
+                {item?.item?.middleName && item.item?.middleName + " "}
+                {item?.item?.familyName}
+              </Text>
+              <Text style={styles.phoneNumber}>
+                {item?.item?.phoneNumbers[0]?.number}
+              </Text>
+            </View>
+          </TouchableOpacity>
         );
       }}
-      ListEmptyComponent={() => (<Text>No flatlist data</Text>)}
+      ListEmptyComponent={() => (
+        <View style={{ justifyContent: "space-evenly", alignItems: "center" }}>
+          <Image
+            style={{ height: HEIGHT/4, width: WIDTH/2, marginTop: HEIGHT/3 }}
+            source={require("../../assets/images/warning.png")}
+          />
+          <Text style={{ fontSize: 24, fontWeight: "bold" }}>
+            No contacts found!
+          </Text>
+        </View>
+      )}
     />
   );
 };
