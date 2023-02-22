@@ -110,6 +110,7 @@ const SecondaryScreen = () => {
                             containerStyle={styles.textInputContainerForPassword}
                             textStyle={styles.inputText}
                             isTextPassword={true}
+                            value={password}
                             onChangeText={(value) => { setPassword(value) }}
                             keyboardType='default'
                         />
@@ -120,7 +121,9 @@ const SecondaryScreen = () => {
                             containerStyle={styles.textInputContainerForPassword}
                             textStyle={styles.inputText}
                             isTextPassword={true}
-                            onChangeText={(value) => { setConfirmPassword(value); passwordValidator(password, confirmPassword) }}
+                            onChangeText={(value) => { setConfirmPassword(value) }}
+                            onEndEditing={() => { passwordValidator(password, confirmPassword) }}
+                            value={confirmPassword}
                             keyboardType='default'
                         />
                     </View>

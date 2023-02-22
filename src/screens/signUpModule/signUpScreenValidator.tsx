@@ -59,7 +59,7 @@ export default function fieldValidator() {
             case valuePassword.length === 0 || valueConfirmPassword.length === 0:
                 setPasswordError('Password field is mendatory.')
                 break;
-            case !(valuePassword === valueConfirmPassword && valuePassword.length === valueConfirmPassword.length): 
+            case (valuePassword !== valueConfirmPassword || valuePassword.length !== valueConfirmPassword.length): 
                 setPasswordError('Passwords does not match! Verify the password')
                 break;
             default:

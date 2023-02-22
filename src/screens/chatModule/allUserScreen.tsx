@@ -57,7 +57,7 @@ const ShowAllUser = () => {
     <View style={{ flex: 1, backgroundColor: "#acacac0a" }}>
       <View style={styles.header}>
         <TextComponent text="All available users" />
-        <TouchableOpacity onPress = {() => auth().signOut()}>
+        <TouchableOpacity onPress = {() => {auth().signOut(); navigation.navigate('Landing Page')}}>
           <Image source={require('../../assets/images/logOut.png')} style = {{height: 27, width: 27, margin: 7}} />
         </TouchableOpacity>
       </View>

@@ -1,7 +1,7 @@
 import React from "react";
 import {
-  Actions,
-  ActionsProps,
+  // Actions,
+  // ActionsProps,
   Bubble,
   GiftedChat,
   InputToolbar,
@@ -37,7 +37,7 @@ import MapView from "react-native-maps";
 import Geolocation from "react-native-geolocation-service";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { MainNavigatorType } from "../../../App";
-import moment from  'moment';
+import moment from "moment";
 
 const ShowChat = () => {
   // All constants and hooks
@@ -50,20 +50,33 @@ const ShowChat = () => {
   const fileOption: CameraOptions = { mediaType: "photo" };
   const WIDTH = useWindowDimensions().width;
   const HEIGHT = useWindowDimensions().height;
-  const navigation = useNavigation<NativeStackNavigationProp<MainNavigatorType>>();
-  const msgRef = database().ref( "/chat/personalMessages/" + params?.fromUserData[0]?.id + "/" + params?.item?.id + "/" );
-  const reverseMsgRef = database().ref( "/chat/personalMessages/" + params?.item?.id + "/" + params?.fromUserData[0]?.id + "/" );
+  const navigation =
+    useNavigation<NativeStackNavigationProp<MainNavigatorType>>();
+  const msgRef = database().ref(
+    "/chat/personalMessages/" +
+      params?.fromUserData[0]?.id +
+      "/" +
+      params?.item?.id +
+      "/"
+  );
+  const reverseMsgRef = database().ref(
+    "/chat/personalMessages/" +
+      params?.item?.id +
+      "/" +
+      params?.fromUserData[0]?.id +
+      "/"
+  );
   const [modalVisible, setModalVisible] = React.useState<boolean>(false);
-  const [textSelectedModalVisible, setTextSelectedModalVisible] = React.useState<boolean>(false);
+  const [textSelectedModalVisible, setTextSelectedModalVisible] =
+    React.useState<boolean>(false);
 
-//   Uncomment below to check all state values
-//   console.log('Sender messages: ', messages);
-//   console.log('Sender messagesID: ', messagesID);
-//   console.log('Reciever messages: ', recieverMessages);
-//   console.log('Reciever messagesID: ', recieverMessagesId);
-  
-  console.log('Execution starts')
+  //   Uncomment below to check all state values
+  //   console.log('Sender messages: ', messages);
+  //   console.log('Sender messagesID: ', messagesID);
+  //   console.log('Reciever messages: ', recieverMessages);
+  //   console.log('Reciever messagesID: ', recieverMessagesId);
 
+  // console.log("Execution starts");
 
   // All related to text....
 
@@ -74,13 +87,13 @@ const ShowChat = () => {
       let rawArr: any[] = [];
       let tempSpreader: any = { ...snapshot.val() };
       Object.entries(tempSpreader).forEach((element: any) => {
-        rawArr.push(element)
-      })
-      rawArr.sort(function(a, b) {
+        rawArr.push(element);
+      });
+      rawArr.sort(function (a, b) {
         return b[1].msg.createdAt - a[1].msg.createdAt;
-      })
-      let sortedTempSpreader = Object.fromEntries(rawArr)
-      setMessagesID(Object.keys(sortedTempSpreader))
+      });
+      let sortedTempSpreader = Object.fromEntries(rawArr);
+      setMessagesID(Object.keys(sortedTempSpreader));
       let tempIdStripped: any = Object.values(sortedTempSpreader);
       let tempArray: any[] = [];
       tempIdStripped.forEach((singleMsg: any) => {
@@ -93,13 +106,13 @@ const ShowChat = () => {
       let rawArr: any[] = [];
       let tempSpreader: any = { ...snapshot.val() };
       Object.entries(tempSpreader).forEach((element: any) => {
-        rawArr.push(element)
-      })
-      rawArr.sort(function(a, b) {
+        rawArr.push(element);
+      });
+      rawArr.sort(function (a, b) {
         return b[1].msg.createdAt - a[1].msg.createdAt;
-      })
-      let sortedTempSpreader = Object.fromEntries(rawArr)
-      setRecieverMessagesID(Object.keys(sortedTempSpreader))
+      });
+      let sortedTempSpreader = Object.fromEntries(rawArr);
+      setRecieverMessagesID(Object.keys(sortedTempSpreader));
       let tempIdStripped: any = Object.values(sortedTempSpreader);
       let tempArray: any[] = [];
       tempIdStripped.forEach((singleMsg: any) => {
@@ -115,40 +128,88 @@ const ShowChat = () => {
   // Handles on long press on text
   const chatOnLongPressed = (message: any) => {
     // setTextSelectedModalVisible(true)
-    Alert.alert('Delete message?', '', [
-      {text: 'Cancel', onPress:() => {console.log('cancel is pressed')}, style: 'cancel'},
-      {text: 'Delete for all', onPress:() => {deleteForAll(message)}, style: 'default'},
-      {text: 'Delete for me', onPress:() => {deleteForMe(message)}, style: 'default'},
-    ])
-  }
+    Alert.alert("Delete message?", "", [
+      {
+        text: "Cancel",
+        onPress: () => {
+          console.log("cancel is pressed");
+        },
+        style: "cancel",
+      },
+      {
+        text: "Delete for all",
+        onPress: () => {
+          deleteForAll(message);
+        },
+        style: "default",
+      },
+      {
+        text: "Delete for me",
+        onPress: () => {
+          deleteForMe(message);
+        },
+        style: "default",
+      },
+    ]);
+  };
   // Deletes sender and reciever reference
   const deleteForAll = (message: any) => {
     var ind = 0;
-    for(var i=0; i<messages.length; i++){
-      if(messages[i] === message){
+    for (var i = 0; i < messages.length; i++) {
+      if (messages[i] === message) {
         ind = i;
       }
     }
     // You can directly call 'deleteForMe(message)' instead of writing below line
     // But to maintain consistency, I wrote it
-    database().ref("chat/personalMessages/" + params?.item?.id + '/' + params?.fromUserData[0]?.id + '/' + recieverMessagesId[ind] + '/').remove()
-    database().ref("chat/personalMessages/" + params?.fromUserData[0]?.id + '/' + params?.item?.id + '/' + messagesID[ind] + '/').remove()
-  }
+    database()
+      .ref(
+        "chat/personalMessages/" +
+          params?.item?.id +
+          "/" +
+          params?.fromUserData[0]?.id +
+          "/" +
+          recieverMessagesId[ind] +
+          "/"
+      )
+      .remove();
+    database()
+      .ref(
+        "chat/personalMessages/" +
+          params?.fromUserData[0]?.id +
+          "/" +
+          params?.item?.id +
+          "/" +
+          messagesID[ind] +
+          "/"
+      )
+      .remove();
+  };
   // Delete sender reference
   const deleteForMe = (message: any) => {
     var ind = 0;
-    for(var i=0; i<messages.length; i++){
-      if(messages[i] === message){
+    for (var i = 0; i < messages.length; i++) {
+      if (messages[i] === message) {
         ind = i;
       }
     }
-    database().ref("chat/personalMessages/" + params?.fromUserData[0]?.id + '/' + params?.item?.id + '/' + messagesID[ind] + '/').remove()
-  }
+    database()
+      .ref(
+        "chat/personalMessages/" +
+          params?.fromUserData[0]?.id +
+          "/" +
+          params?.item?.id +
+          "/" +
+          messagesID[ind] +
+          "/"
+      )
+      .remove();
+  };
   // Handles clear chat for sender
   const clearChat = () => {
     msgRef.remove();
     // reverseMsgRef.remove();
-  }
+  };
   //Handles onSend for text message
   const onSend = React.useCallback((messageArray: any[]) => {
     const myMsg = messageArray[0];
@@ -187,20 +248,19 @@ const ShowChat = () => {
     console.log(msg);
   }, []);
 
-
   //All related to images....
 
   //Common method to add images on firebase storage
   const uploadToFirebase = async (imageName: string) => {
-    await storage().ref(`personalMessageImages/`).putFile(imageName);
+    await storage().ref(`${imageName}`).putFile("personalMessageImages/");
   };
   //Image-picker component to open camera
-  const callCamera = (m: any[]) => {
-    launchCamera(fileOption,  (callback: any) => {
+  const callCamera = () => {
+    launchCamera(fileOption, (callback: any) => {
       if (callback.didCancel) {
         console.log("Cancelled image picker");
       } else if (callback.errorCode) {
-        console.log(callback.errorCode, '~~~~');
+        console.log(callback.errorCode, "~~~~");
       } else if (callback.assets) {
         // console.log("Uri from camera", callback.assets[0].uri);
         const imagePathString: any = callback?.assets[0]?.uri;
@@ -222,7 +282,7 @@ const ShowChat = () => {
     });
   };
   //Image-picker component to open gallery
-  const callGalery = async (m: any[]) => {
+  const callGalery = async () => {
     await launchImageLibrary(fileOption, async (callback: any) => {
       if (callback.didCancel) {
         console.log("Cancelled image picker");
@@ -285,7 +345,6 @@ const ShowChat = () => {
     );
     console.log(msg);
   }, []);
-
 
   // All related to maps....
 
@@ -392,7 +451,11 @@ const ShowChat = () => {
     return (
       <TouchableOpacity
         onPress={() => openMaps()}
-        style={{ height: HEIGHT/4, justifyContent: 'center', alignItems: 'center' }}
+        style={{
+          height: HEIGHT / 4,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
       >
         <MapView
           region={{
@@ -403,13 +466,12 @@ const ShowChat = () => {
           }}
           scrollEnabled={true}
           zoomEnabled={true}
-          style={{ height: HEIGHT/4.2, width: WIDTH/2.3 }}
-          mapType={'terrain'}
+          style={{ height: HEIGHT / 4.2, width: WIDTH / 2.3 }}
+          mapType={"terrain"}
         />
       </TouchableOpacity>
     );
   };
-
 
   // All related to contacts....
 
@@ -449,14 +511,14 @@ const ShowChat = () => {
   };
   // Opens dial-pad
   const openDialPad = (phoneNumber: any) => {
-    let tempNum = ''
-    if (Platform.OS == 'android'){
+    let tempNum = "";
+    if (Platform.OS == "android") {
       tempNum = `tel:${phoneNumber}`;
     } else {
-      tempNum = `telprompt:${phoneNumber}`
+      tempNum = `telprompt:${phoneNumber}`;
     }
     Linking.openURL(tempNum);
-  }
+  };
 
   //Returns gifted chat UI along with header which contains the reciever name
   return (
@@ -488,7 +550,7 @@ const ShowChat = () => {
             <TouchableOpacity
               style={styles.iconContainer}
               onPress={() => {
-                callGalery(messages);
+                callGalery();
               }}
             >
               <Image
@@ -598,7 +660,7 @@ const ShowChat = () => {
                   <TouchableOpacity
                     style={styles.iconContainer}
                     onPress={() => {
-                      callCamera(messages);
+                      callCamera();
                     }}
                   >
                     <Image
@@ -698,11 +760,14 @@ const ShowChat = () => {
             // )
             // And remove below code
             return (
-              <View
+              <TouchableOpacity
                 style={{
                   justifyContent: "center",
                   alignItems: "center",
                   padding: 3,
+                }}
+                onLongPress={() => {
+                  chatOnLongPressed(currentMessage);
                 }}
               >
                 <View style={[styles.contactContainer, { width: WIDTH / 2.2 }]}>
@@ -726,7 +791,7 @@ const ShowChat = () => {
                     </Text>
                   </TouchableOpacity>
                 </View>
-              </View>
+              </TouchableOpacity>
             );
           }
           return (
@@ -762,7 +827,7 @@ const styles = StyleSheet.create({
     height: "auto",
     maxHeight: 180,
     justifyContent: "center",
-    flexDirection: 'row'
+    flexDirection: "row",
   },
   mapContainer: {
     backgroundColor: "#c0c0c0",
@@ -785,7 +850,7 @@ const styles = StyleSheet.create({
   locationIcon: {
     height: 40,
     width: 40,
-    marginLeft: 18
+    marginLeft: 18,
   },
   contactIcon: {
     height: 60,
@@ -827,7 +892,7 @@ const styles = StyleSheet.create({
     marginRight: 5,
     opacity: 0.7,
     fontSize: 10,
-    marginTop: 4
+    marginTop: 4,
   },
 });
 

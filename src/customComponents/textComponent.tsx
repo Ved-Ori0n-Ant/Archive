@@ -5,13 +5,14 @@ type TextComponentProp = {
     containerStyle?: StyleProp<ViewStyle>
     textStyle?: StyleProp<TextStyle>
     text?: string
+    testID?: string
 }
 
 const TextComponent = (props: TextComponentProp) => {
-    const {containerStyle, textStyle, text} = props
+    const {containerStyle, textStyle, text, testID} = props
     return(
         <View style = {[styles.textContainer, containerStyle]}>
-            <Text style = {[styles.textStyle, textStyle]}>
+            <Text style = {[styles.textStyle, textStyle]} testID = {testID}>
                 {text || 'TextComponent'}
             </Text>
         </View>

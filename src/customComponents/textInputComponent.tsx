@@ -12,11 +12,12 @@ type TextInputComponentProps = {
     value?: string
     onChangeText?: (value: string) => void
     keyboardType?: KeyboardTypeOptions
+    onEndEditing?: any
     // lable?: string
 }
 
 const TextInputComponent = (prop: TextInputComponentProps) => {
-    const {placeholderText, textStyle, containerStyle, isTextPassword, value, onChangeText, keyboardType} = prop
+    const {placeholderText, textStyle, containerStyle, isTextPassword, value, onChangeText, keyboardType, onEndEditing} = prop
     return(
         <View style = {[styles.containerStyle, containerStyle]}>
             <TextInput 
@@ -26,6 +27,7 @@ const TextInputComponent = (prop: TextInputComponentProps) => {
                 value = {value}
                 onChangeText = {onChangeText}
                 keyboardType = {keyboardType || 'email-address'}
+                onEndEditing = {onEndEditing}
                 // label = {placeholderText}
                 // mode = {"outlined"}
             />

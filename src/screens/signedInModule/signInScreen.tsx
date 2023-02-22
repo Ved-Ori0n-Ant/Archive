@@ -50,7 +50,7 @@ const HomeScreen = () => {
     return (
     <>
       <View style={styles.homeScreenMainContainer}>
-        <TextComponent text="Please enter your credentials:" />
+        <TextComponent testID="const text" text="Please enter your credentials:" />
         <TextInputComponent
           placeholderText="Enter your email"
           containerStyle={styles.textInputContainer}
@@ -70,6 +70,7 @@ const HomeScreen = () => {
         ) : null}
         <View style={[styles.textInputContainer, { borderBottomWidth: 1 }]}>
           <TextInput
+            testID="password-input"
             placeholder="Enter your password"
             style={[styles.inputText, { padding: 10 }]}
             secureTextEntry={true}
@@ -84,6 +85,7 @@ const HomeScreen = () => {
           onPress={() => {
             logInPressed();
           }}
+          testID={'signin btn'}
         >
           <Text style={styles.homeScreenNavigationButtonText}>Sign in</Text>
         </TouchableOpacity>
