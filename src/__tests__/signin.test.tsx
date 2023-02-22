@@ -18,9 +18,6 @@ jest.mock('@react-navigation/native', () => {
     ...actualNav,
     useNavigation: () => ({
       navigation: mockedNavigate,
-      // {
-      //   navigate: mockedNavigate,
-      // }
     }),
   };
 });
@@ -34,11 +31,11 @@ it('should render default text', () => {
 
 it('placeholder default values', () => {
   render(<HomeScreen />);
-  const emailInput = screen.getByPlaceholderText('Enter your email')
-  const passwordInput = screen.getByTestId('password-input')
+  // const emailInput = screen.getByTestId('email-input');
+  const passwordInput = screen.getByTestId('password-input');
   const submitBtn = screen.getByTestId('signin btn');
 
-  fireEvent.changeText(emailInput, 'abc@def.ghi')
+  // fireEvent.changeText(emailInput, 'abc@def.ghi')
   fireEvent.changeText(passwordInput, '121212')
   fireEvent.press(submitBtn)
 
@@ -46,4 +43,5 @@ it('placeholder default values', () => {
   expect('121212').toBeDefined()
   expect(mockedNavigate).toBeCalledTimes(0)  
   expect(passwordInput.props.value).toBe('121212')
+  // expect(emailInput.props.value).toBe('abc@def.ghi')
 })

@@ -66,6 +66,7 @@ const HomeScreen = () => {
             text={emailError}
             textStyle={styles.errorText}
             containerStyle={styles.textInputContainer}
+            testID={"email-input"}
           />
         ) : null}
         <View style={[styles.textInputContainer, { borderBottomWidth: 1 }]}>
