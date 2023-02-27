@@ -93,10 +93,6 @@ export default function fieldValidator() {
         if(isValidated) {
             clearInputs()
             setIsValidated(false)
-
-            setTimeout(() => {
-                console.log('signed up successfully!')
-            }, 1000);
         } else {
             clearInputs()
             setIsValidated(false)

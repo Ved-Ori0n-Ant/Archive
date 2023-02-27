@@ -32,17 +32,16 @@ const HomeScreen = () => {
 
   const logInPressed = async () => {
     try {
-      const userLogin = await auth().signInWithEmailAndPassword(
+      await auth().signInWithEmailAndPassword(
         email,
         password
       );
-      console.log(userLogin);
       setErrorMessage("");
       setEmail("");
       setPassword("");
       navigation.navigate('Users Screen')
     } catch (err: any) {
-      console.log(err);
+      console.log('Error encountered while log in with user credential', err);
       setErrorMessage(err.message);
     }
   };
@@ -50,23 +49,24 @@ const HomeScreen = () => {
     return (
     <>
       <View style={styles.homeScreenMainContainer}>
-        <TextComponent testID="const text" text="Please enter your credentials:" />
-        <TextInputComponent
-          placeholderText="Enter your email"
-          containerStyle={styles.textInputContainer}
-          textStyle={styles.inputText}
-          value={email}
-          onChangeText={(value) => {
-            setEmail(value);
-            emailValidator(value);
-          }}
-        />
+        <TextComponent testID="const-text" text="Please enter your credentials:" />
+        <View style={[styles.textInputContainer, {borderBottomWidth: 1}]}>
+          <TextInput
+            testID="email-input"
+            placeholder="Enter your email"
+            style={[styles.inputText, {padding: 10}]}
+            value={email}
+            onChangeText={(value) => {
+              setEmail(value);
+              emailValidator(value);
+            }}
+          />
+        </View>
         {emailError !== "" ? (
           <TextComponent
             text={emailError}
             textStyle={styles.errorText}
             containerStyle={styles.textInputContainer}
-            testID={"email-input"}
           />
         ) : null}
         <View style={[styles.textInputContainer, { borderBottomWidth: 1 }]}>
@@ -82,15 +82,18 @@ const HomeScreen = () => {
           />
         </View>
         <TouchableOpacity
+          accessibilityState={{disabled: false}}
           style={styles.homeScreenNavigationButton}
           onPress={() => {
             logInPressed();
           }}
-          testID={'signin btn'}
+          testID={'signin-btn'}
         >
           <Text style={styles.homeScreenNavigationButtonText}>Sign in</Text>
         </TouchableOpacity>
         <TouchableOpacity
+          accessibilityState={{disabled: false}}
+          testID="signin_with_phone"
           onPress={() => {
             navigation.navigate("Signin Phone");
           }}
@@ -99,6 +102,8 @@ const HomeScreen = () => {
           <Text style={styles.signinPhone}>Try another way of signin..</Text>
         </TouchableOpacity>
         <TouchableOpacity
+          testID="sign_up_btn"
+          accessibilityState={{disabled: false}}
           onPress={() => {
             navigation.navigate("Sign up Page");
           }}

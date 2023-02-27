@@ -4,12 +4,11 @@ import TextComponent from "../../customComponents/textComponent";
 import fieldValidator from "../signUpModule/signUpScreenValidator";
 import TextInputComponent from "../../customComponents/textInputComponent";
 import auth from '@react-native-firebase/auth';
+import { useNavigation } from "@react-navigation/native";
+import { MainNavigatorType } from "../../../App";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
-interface Navgation {
-    navigate(destination?: string, params?: any): void;
-}
-
-const PhoneSigninScreen = ({navigation}: {navigation: Navgation}) => {
+const PhoneSigninScreen = () => {
     // const navigation = useNavigation();
     const validator = fieldValidator();
     const [errorMessage, setErrorMessage] = useState<string>('');
@@ -17,6 +16,7 @@ const PhoneSigninScreen = ({navigation}: {navigation: Navgation}) => {
     const [confirm, setConfirm] = useState<any>(null)
     const [code, setCode] = useState('');
     const [isShownActivityIndicator, setIsShownActivityIndicator] = useState<boolean>(false)
+    const navigation = useNavigation<NativeStackNavigationProp<MainNavigatorType>>();
     const {
         phoneNumber,
         setPhoneNumber,
@@ -60,8 +60,9 @@ const PhoneSigninScreen = ({navigation}: {navigation: Navgation}) => {
         <>
         {/* <KeyboardAvoidingView> */}
         <View style = {styles.homeScreenMainContainer}>
-                <TextComponent text="Please enter your credentials:" />
+                <TextComponent testID="const-txt" text="Please enter your credentials:" textStyle={{marginBottom: 62}}/>
                 <TextInputComponent 
+                    testID="phone-input"
                     placeholderText="Enter your phone number" 
                     containerStyle = {styles.textInputContainer} 
                     textStyle = {styles.inputText} 
@@ -73,7 +74,7 @@ const PhoneSigninScreen = ({navigation}: {navigation: Navgation}) => {
                 { !isOTPGenerated ? 
                 (    
                     <>
-                        <TouchableOpacity style = {styles.homeScreenNavigationButton} onPress = {() => {generateOTP()}}>
+                        <TouchableOpacity testID="otp_generator" style = {styles.homeScreenNavigationButton} onPress = {() => {generateOTP()}}>
                             <Text style = {styles.homeScreenNavigationButtonText}>Generate OTP</Text>
                         </TouchableOpacity>
                         {/* <View>
@@ -84,6 +85,7 @@ const PhoneSigninScreen = ({navigation}: {navigation: Navgation}) => {
                     <>
                         <View style = {styles.textInputContainer}>
                             <TextInput 
+                                testID="otp-input"
                                 placeholder="Enter the OTP" 
                                 // containerStyle = {styles.textInputContainer} 
                                 style = {styles.inputText} 
@@ -98,11 +100,11 @@ const PhoneSigninScreen = ({navigation}: {navigation: Navgation}) => {
                     </> 
                 )
                 }
-                <TouchableOpacity onPress = {() => {navigation.navigate('Landing Page')}}>
+                <TouchableOpacity testID="sign_in_with_email" onPress = {() => {navigation.navigate('Landing Page')}}>
                     {/* Sign in with email and password */}
                     <Text style = {styles.signinPhone}>Try another way of signin..</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress = {() => {navigation.navigate('Sign up Page')}}>
+                <TouchableOpacity testID="sign_up" onPress = {() => {navigation.navigate('Sign up Page')}}>
                     <Text style = {styles.signupNavigator}>New user? Sign up..</Text>
                 </TouchableOpacity>
                 <View style = {{padding: 13}}>

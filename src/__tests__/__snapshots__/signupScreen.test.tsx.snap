@@ -1,0 +1,687 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`sign up renders okay should render fine 1`] = `
+<RCTScrollView
+  scrollEnabled={true}
+>
+  <View>
+    <View>
+      <View
+        style={
+          [
+            {
+              "margin": 5,
+              "padding": 3,
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "black",
+                "fontSize": 22,
+                "textDecorationLine": "underline",
+              },
+              [
+                {
+                  "alignSelf": "center",
+                  "fontWeight": "bold",
+                },
+              ],
+            ]
+          }
+        >
+          Please sign-up
+        </Text>
+      </View>
+      <View
+        style={
+          [
+            {
+              "margin": 5,
+              "padding": 3,
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "black",
+                "fontSize": 22,
+                "textDecorationLine": "underline",
+              },
+              undefined,
+            ]
+          }
+        >
+          Please fill below details
+        </Text>
+      </View>
+      <View
+        style={
+          [
+            {},
+            {
+              "alignSelf": "center",
+              "marginVertical": 2,
+              "width": "85%",
+            },
+          ]
+        }
+      >
+        <TextInput
+          keyboardType="email-address"
+          onChangeText={[Function]}
+          placeholder="Enter your name"
+          style={
+            [
+              {
+                "borderBottomColor": "black",
+                "borderBottomWidth": 1,
+                "fontSize": 16,
+                "fontWeight": "300",
+                "padding": 10,
+              },
+              {
+                "fontSize": 12,
+                "fontWeight": "500",
+                "height": 35,
+              },
+            ]
+          }
+          testID="name-input"
+        />
+      </View>
+      <View
+        style={
+          [
+            {},
+            {
+              "alignSelf": "center",
+              "marginVertical": 2,
+              "width": "85%",
+            },
+          ]
+        }
+      >
+        <TextInput
+          keyboardType="email-address"
+          onChangeText={[Function]}
+          placeholder="Enter your email"
+          style={
+            [
+              {
+                "borderBottomColor": "black",
+                "borderBottomWidth": 1,
+                "fontSize": 16,
+                "fontWeight": "300",
+                "padding": 10,
+              },
+              {
+                "fontSize": 12,
+                "fontWeight": "500",
+                "height": 35,
+              },
+            ]
+          }
+          testID="email-input"
+        />
+      </View>
+      <View
+        style={
+          [
+            {},
+            {
+              "alignSelf": "center",
+              "marginVertical": 2,
+              "width": "85%",
+            },
+          ]
+        }
+      >
+        <TextInput
+          keyboardType="numeric"
+          onChangeText={[Function]}
+          placeholder="Enter your phone number"
+          style={
+            [
+              {
+                "borderBottomColor": "black",
+                "borderBottomWidth": 1,
+                "fontSize": 16,
+                "fontWeight": "300",
+                "padding": 10,
+              },
+              {
+                "fontSize": 12,
+                "fontWeight": "500",
+                "height": 35,
+              },
+            ]
+          }
+          testID="number-input"
+        />
+      </View>
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "justifyContent": "center",
+          }
+        }
+      >
+        <View
+          style={
+            [
+              {},
+              {
+                "marginHorizontal": 7,
+                "width": "40%",
+              },
+            ]
+          }
+        >
+          <TextInput
+            keyboardType="default"
+            onChangeText={[Function]}
+            placeholder="Enter your password"
+            secureTextEntry={true}
+            style={
+              [
+                {
+                  "borderBottomColor": "black",
+                  "borderBottomWidth": 1,
+                  "fontSize": 16,
+                  "fontWeight": "300",
+                  "padding": 10,
+                },
+                {
+                  "fontSize": 12,
+                  "fontWeight": "500",
+                  "height": 35,
+                },
+              ]
+            }
+            testID="pass-input"
+            value=""
+          />
+        </View>
+        <View
+          style={
+            [
+              {},
+              {
+                "marginHorizontal": 7,
+                "width": "40%",
+              },
+            ]
+          }
+        >
+          <TextInput
+            keyboardType="default"
+            onChangeText={[Function]}
+            onEndEditing={[Function]}
+            placeholder="Confirm your password"
+            secureTextEntry={true}
+            style={
+              [
+                {
+                  "borderBottomColor": "black",
+                  "borderBottomWidth": 1,
+                  "fontSize": 16,
+                  "fontWeight": "300",
+                  "padding": 10,
+                },
+                {
+                  "fontSize": 12,
+                  "fontWeight": "500",
+                  "height": 35,
+                },
+              ]
+            }
+            testID="pass-input"
+            value=""
+          />
+        </View>
+      </View>
+      <View
+        style={
+          {
+            "marginTop": 30,
+          }
+        }
+      >
+        <View
+          style={
+            {
+              "alignItems": "flex-start",
+              "flexDirection": "column",
+              "justifyContent": "center",
+              "margin": 7,
+            }
+          }
+        >
+          <View
+            style={
+              [
+                {
+                  "margin": 5,
+                  "padding": 3,
+                },
+                undefined,
+              ]
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "color": "black",
+                    "fontSize": 22,
+                    "textDecorationLine": "underline",
+                  },
+                  undefined,
+                ]
+              }
+            >
+              Upload your profile photo
+            </Text>
+          </View>
+          <View
+            testID="profile-pic"
+          >
+            <View
+              style={
+                {
+                  "alignItems": "baseline",
+                }
+              }
+            >
+              <View
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": undefined,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <View
+                  style={
+                    [
+                      {
+                        "backgroundColor": "#00fc",
+                        "borderColor": "black",
+                        "borderRadius": 10,
+                        "borderWidth": 0.5,
+                        "marginHorizontal": 15,
+                        "padding": 7,
+                      },
+                      {
+                        "alignSelf": "center",
+                        "backgroundColor": "black",
+                        "width": "90%",
+                      },
+                    ]
+                  }
+                >
+                  <Text
+                    style={
+                      [
+                        {
+                          "color": "#c0c0c0",
+                          "fontSize": 16,
+                          "fontWeight": "bold",
+                        },
+                        {
+                          "fontSize": 8,
+                        },
+                      ]
+                    }
+                  >
+                    Upload image
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+        <View
+          style={
+            {
+              "alignItems": "flex-start",
+              "flexDirection": "column",
+              "justifyContent": "center",
+              "margin": 7,
+            }
+          }
+        >
+          <View
+            style={
+              [
+                {
+                  "margin": 5,
+                  "padding": 3,
+                },
+                undefined,
+              ]
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "color": "black",
+                    "fontSize": 22,
+                    "textDecorationLine": "underline",
+                  },
+                  undefined,
+                ]
+              }
+            >
+              Enter your D.O.B.
+            </Text>
+          </View>
+          <View
+            style={
+              {
+                "marginHorizontal": 15,
+              }
+            }
+            testID="D_O_B"
+          >
+            <View
+              accessibilityState={
+                {
+                  "busy": undefined,
+                  "checked": undefined,
+                  "disabled": undefined,
+                  "expanded": undefined,
+                  "selected": undefined,
+                }
+              }
+              accessibilityValue={
+                {
+                  "max": undefined,
+                  "min": undefined,
+                  "now": undefined,
+                  "text": undefined,
+                }
+              }
+              accessible={true}
+              collapsable={false}
+              focusable={true}
+              onClick={[Function]}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
+              style={
+                {
+                  "opacity": 1,
+                }
+              }
+            >
+              <Text>
+                2/27/2023
+              </Text>
+            </View>
+          </View>
+        </View>
+        <View
+          style={
+            {
+              "marginTop": 10,
+            }
+          }
+        >
+          <View
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "opacity": 1,
+              }
+            }
+            testID="clear_btn"
+          >
+            <View
+              style={
+                [
+                  {
+                    "backgroundColor": "#00fc",
+                    "borderColor": "black",
+                    "borderRadius": 10,
+                    "borderWidth": 0.5,
+                    "marginHorizontal": 15,
+                    "padding": 7,
+                  },
+                  {
+                    "backgroundColor": "black",
+                    "marginHorizontal": 15,
+                    "marginVertical": 7,
+                  },
+                ]
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#c0c0c0",
+                      "fontSize": 16,
+                      "fontWeight": "bold",
+                    },
+                    {
+                      "alignSelf": "center",
+                    },
+                  ]
+                }
+              >
+                Clear
+              </Text>
+            </View>
+          </View>
+          <View
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "opacity": 1,
+              }
+            }
+            testID="submit_btn"
+          >
+            <View
+              style={
+                [
+                  {
+                    "backgroundColor": "#00fc",
+                    "borderColor": "black",
+                    "borderRadius": 10,
+                    "borderWidth": 0.5,
+                    "marginHorizontal": 15,
+                    "padding": 7,
+                  },
+                  {
+                    "backgroundColor": "black",
+                    "marginHorizontal": 15,
+                    "marginVertical": 7,
+                  },
+                ]
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#c0c0c0",
+                      "fontSize": 16,
+                      "fontWeight": "bold",
+                    },
+                    {
+                      "alignSelf": "center",
+                    },
+                  ]
+                }
+              >
+                Sign up
+              </Text>
+            </View>
+          </View>
+          <View
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "opacity": 1,
+              }
+            }
+            testID="Move_TO_Signin"
+          >
+            <View
+              style={
+                [
+                  {
+                    "margin": 5,
+                    "padding": 3,
+                  },
+                  undefined,
+                ]
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "color": "black",
+                      "fontSize": 22,
+                      "textDecorationLine": "underline",
+                    },
+                    {
+                      "alignSelf": "center",
+                      "color": "blue",
+                      "fontSize": 14,
+                    },
+                  ]
+                }
+              >
+                Already have an account?
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</RCTScrollView>
+`;

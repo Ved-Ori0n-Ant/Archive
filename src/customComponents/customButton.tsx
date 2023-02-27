@@ -6,12 +6,13 @@ type ButtonComponentProps = {
     style? : StyleProp<ViewStyle>
     textStyle? : StyleProp<TextStyle>
     onPress? : () => void
+    testID?: string
 }
 
 const ButtonComponent = (props: ButtonComponentProps) => {
-    const {text, style, textStyle, onPress} = props
+    const {text, style, textStyle, onPress, testID} = props
     return(
-        <TouchableOpacity onPress = {onPress}>
+        <TouchableOpacity onPress = {onPress} testID={testID}>
             <View style = {[styles.button, style]}>
                 <Text style = {[styles.buttonText, textStyle]}>{text || 'CustomButton'}</Text>
             </View>

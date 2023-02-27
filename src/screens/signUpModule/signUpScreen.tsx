@@ -9,13 +9,13 @@ import fieldValidator from "./signUpScreenValidator";
 import styles from "./signUpStyles";
 import auth from '@react-native-firebase/auth';
 import uuid from 'react-native-uuid';
-import { db } from "../../../firebase-config";
-import { ref, push, onValue, update, remove } from 'firebase/database';
+// import { db } from "../../firebase-config";
+// import { ref, push, onValue, update, remove } from 'firebase/database';
 import { useNavigation } from "@react-navigation/native";
 import { MainNavigatorType } from "../../../App";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 // import { Button } from "@mui/material";
-
+import database from '@react-native-firebase/database';
 
 const SecondaryScreen = () => {
     // const navigation = useNavigation();
@@ -44,19 +44,31 @@ const SecondaryScreen = () => {
       phoneNumberValidator,
     } = validator;
     const addToDatabase = async() => {
-        push(ref(db, '/user/'), {
-            id: uuid.v4(),
-            name: name,
-            email: email,
-            password: password,
-            phoneNumber: phoneNumber,
-        })
+        // push(ref(db, '/user/'), {
+        //     id: uuid.v4(),
+        //     name: name,
+        //     email: email,
+        //     password: password,
+        //     phoneNumber: phoneNumber,
+        // })
+
+        database()
+        .ref('/user/')
+        .set(
+            {
+                id: uuid.v4(),
+                name: name,
+                email: email,
+                password: password,
+                phoneNumber: phoneNumber,
+            }
+        ).then(() => console.log('data added to database'))
     }
     const signUpPressed = async () => {
         checkSubmit();
         addToDatabase();
         try {
-            const createUser = await auth().createUserWithEmailAndPassword(email, password)
+            await auth().createUserWithEmailAndPassword(email, password)
             console.log('email: ', email, 'password: ', password, 'phone-number: ', phoneNumber)
             navigation.navigate('Landing Page')
         } catch (err) {
@@ -68,7 +80,7 @@ const SecondaryScreen = () => {
             <View>
                 <TextComponent text="Please sign-up" textStyle={[styles.heading]} />
                 <TextComponent text="Please fill below details" />
-                <KeyboardAvoidingView>
+                {/* <KeyboardAvoidingView> */}
 
                     {/* Name field */}
                     <TextInputComponent
@@ -79,6 +91,7 @@ const SecondaryScreen = () => {
                             setName(value);
                             nameValidator(value)
                         }}
+                        testID='name-input'
                     />
                     {nameError !== '' ? (<TextComponent text={nameError} textStyle={styles.errorText} containerStyle={styles.textInputContainer} />) : (null)}
 
@@ -88,6 +101,7 @@ const SecondaryScreen = () => {
                         containerStyle={styles.textInputContainer}
                         textStyle={styles.inputText}
                         onChangeText={(value) => { setEmail(value); emailValidator(value) }}
+                        testID='email-input'
                     />
                     {emailError !== '' ? (<TextComponent text={emailError} textStyle={styles.errorText} containerStyle={styles.textInputContainer} />) : (null)}
 
@@ -98,6 +112,7 @@ const SecondaryScreen = () => {
                         textStyle={styles.inputText}
                         onChangeText={(value) => { setPhoneNumber(value); phoneNumberValidator(value) }}
                         keyboardType='numeric'
+                        testID="number-input"
                     />
                     {phoneNumberError !== '' ? (<TextComponent text={phoneNumberError} textStyle={styles.errorText} containerStyle={styles.textInputContainer} />) : (null)}
 
@@ -113,6 +128,7 @@ const SecondaryScreen = () => {
                             value={password}
                             onChangeText={(value) => { setPassword(value) }}
                             keyboardType='default'
+                            testID="pass-input"
                         />
 
                         {/* Password re-entry */}
@@ -125,10 +141,11 @@ const SecondaryScreen = () => {
                             onEndEditing={() => { passwordValidator(password, confirmPassword) }}
                             value={confirmPassword}
                             keyboardType='default'
+                            testID="pass-input"
                         />
                     </View>
                     {passwordError !== '' ? (<TextComponent text={passwordError} textStyle={styles.errorText} containerStyle={styles.textInputContainer} />) : (null)}
-                </KeyboardAvoidingView>
+                {/* </KeyboardAvoidingView> */}
                 <View style={{ marginTop: 30 }}>
 
                     {/* Image picker */}
@@ -138,13 +155,14 @@ const SecondaryScreen = () => {
                             fileOption={{ mediaType: "photo" }}
                             buttonTextStyle={styles.imagePickerButtonText}
                             buttonStyle={styles.imagePickerButton}
+                            testID='profile-pic'
                         />
                     </View>
 
                     {/* Date picker */}
                     <View style={styles.datePickerContainer}>
                         <TextComponent text="Enter your D.O.B." />
-                        <DatePickerComponent style={{ marginHorizontal: 15 }} />
+                        <DatePickerComponent testID="D_O_B" style={{ marginHorizontal: 15 }} />
                     </View>
 
                     {/* Form formatter */}
@@ -153,6 +171,7 @@ const SecondaryScreen = () => {
                         {/* Clear form */}
                         <ButtonComponent
                             text='Clear'
+                            testID="clear_btn"
                             style={{
                                 backgroundColor: 'black',
                                 marginHorizontal: 15,
@@ -164,6 +183,7 @@ const SecondaryScreen = () => {
                         {/* Submit form */}
                         <ButtonComponent
                             text='Sign up'
+                            testID="submit_btn"
                             style={{
                                 backgroundColor: 'black',
                                 marginHorizontal: 15,
@@ -174,7 +194,7 @@ const SecondaryScreen = () => {
                         {/* <Button title="Material button" /> */}
 
                         {/* Back to sign in screen, in case of mis-tap */}
-                        <TouchableOpacity onPress={() => { navigation.navigate('Landing Page') }}>
+                        <TouchableOpacity onPress={() => { navigation.navigate('Landing Page') }} testID={'Move_TO_Signin'}>
                             <TextComponent text="Already have an account?" textStyle={styles.signinNavigator} />
                         </TouchableOpacity>
 

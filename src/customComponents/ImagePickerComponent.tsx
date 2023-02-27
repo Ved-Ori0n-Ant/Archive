@@ -10,10 +10,11 @@ type ImagePickerComponentProps = {
     imageStyle?: StyleProp<ImageProps>
     buttonStyle?: StyleProp<ViewStyle>
     buttonTextStyle?: StyleProp<TextStyle>
+    testID?: string
 }
 
 const ImagePickerComponent = (prop: ImagePickerComponentProps) => {
-    const {fileOption, containerStyle, imageStyle, buttonStyle, buttonTextStyle} = prop
+    const {fileOption, containerStyle, imageStyle, buttonStyle, buttonTextStyle, testID} = prop
 
     const [isClicked, setIsClicked] = useState(false)
     const [imagePath, setImagePath] = useState('')
@@ -51,7 +52,7 @@ const ImagePickerComponent = (prop: ImagePickerComponentProps) => {
     }
 
     return(
-        <View>
+        <View testID={testID || 'image-picker'}>
             {isClicked ? 
                 (<>
                 <View style = {[styles.containerStyle, containerStyle]}>

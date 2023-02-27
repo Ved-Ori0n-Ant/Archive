@@ -1,0 +1,255 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Phone signin screen should render okay! should render okay 1`] = `
+<View
+  style={
+    {
+      "alignItems": "center",
+      "backgroundColor": "#c0c0c00a",
+      "flex": 1,
+      "justifyContent": "center",
+    }
+  }
+>
+  <View
+    style={
+      [
+        {
+          "margin": 5,
+          "padding": 3,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "color": "black",
+            "fontSize": 22,
+            "textDecorationLine": "underline",
+          },
+          {
+            "marginBottom": 62,
+          },
+        ]
+      }
+      testID="const-txt"
+    >
+      Please enter your credentials:
+    </Text>
+  </View>
+  <View
+    style={
+      [
+        {},
+        {
+          "alignSelf": "center",
+          "borderBottomWidth": 1,
+          "marginVertical": 2,
+          "width": "85%",
+        },
+      ]
+    }
+  >
+    <TextInput
+      keyboardType="number-pad"
+      onChangeText={[Function]}
+      placeholder="Enter your phone number"
+      style={
+        [
+          {
+            "borderBottomColor": "black",
+            "borderBottomWidth": 1,
+            "fontSize": 16,
+            "fontWeight": "300",
+            "padding": 10,
+          },
+          {
+            "fontSize": 14,
+            "fontWeight": "500",
+            "height": 35,
+          },
+        ]
+      }
+      testID="phone-input"
+      value=""
+    />
+  </View>
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      {
+        "alignItems": "center",
+        "backgroundColor": "black",
+        "borderColor": "black",
+        "borderRadius": 16,
+        "borderWidth": 0.3,
+        "height": 42,
+        "justifyContent": "center",
+        "margin": 3,
+        "marginTop": 23,
+        "opacity": 1,
+        "padding": 3,
+        "width": "60%",
+      }
+    }
+    testID="otp_generator"
+  >
+    <Text
+      style={
+        {
+          "alignSelf": "center",
+          "color": "white",
+          "flex": 1,
+          "fontSize": 16,
+          "padding": 7,
+          "textDecorationLine": "underline",
+        }
+      }
+    >
+      Generate OTP
+    </Text>
+  </View>
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      {
+        "opacity": 1,
+      }
+    }
+    testID="sign_in_with_email"
+  >
+    <Text
+      style={
+        {
+          "alignSelf": "center",
+          "color": "black",
+          "fontSize": 14,
+          "marginBottom": 8,
+        }
+      }
+    >
+      Try another way of signin..
+    </Text>
+  </View>
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      {
+        "opacity": 1,
+      }
+    }
+    testID="sign_up"
+  >
+    <Text
+      style={
+        {
+          "alignSelf": "center",
+          "color": "blue",
+          "fontSize": 16,
+        }
+      }
+    >
+      New user? Sign up..
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "padding": 13,
+      }
+    }
+  >
+    <Text
+      style={
+        {
+          "color": "red",
+          "fontSize": 8,
+          "fontWeight": "bold",
+          "textDecorationLine": "none",
+        }
+      }
+    />
+  </View>
+</View>
+`;

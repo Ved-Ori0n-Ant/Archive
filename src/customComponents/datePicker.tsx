@@ -4,6 +4,7 @@ import{TouchableOpacity, View, Text, ViewStyle, StyleProp} from 'react-native';
 
 type DatePickerComponentProp = {
     style? : StyleProp<ViewStyle>
+    testID?: string
 }
 
 const DatePickerComponent = (prop: DatePickerComponentProp) => {
@@ -23,7 +24,7 @@ const DatePickerComponent = (prop: DatePickerComponentProp) => {
     }
 
     return(
-        <View style = {prop.style}>
+        <View style = {prop.style} testID={prop.testID}>
             <TouchableOpacity onPress={showDatePicker}>
                 <Text>{date.toLocaleDateString()}</Text>
             </TouchableOpacity>
