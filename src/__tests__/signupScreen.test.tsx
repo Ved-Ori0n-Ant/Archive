@@ -101,8 +101,9 @@ describe('sign up renders okay', () => {
       const submitBtn = tree.getByTestId('submit_btn');
 
       fireEvent.press(clearBtn);
+      expect(clearInputs).toBeCalledTimes(0);
+
       fireEvent.press(submitBtn);
-      
       // If touchables could be pressed then number of calls made would be one
       expect(clearInputs).toBeCalledTimes(0);
       expect(signUpPressed).toBeCalledTimes(0);

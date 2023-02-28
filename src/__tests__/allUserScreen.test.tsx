@@ -1,15 +1,14 @@
 import React from 'react';
 import ShowAllUser from '../screens/chatModule/allUserScreen';
-import { cleanup, render, fireEvent, screen } from '@testing-library/react-native'
-import '@testing-library/jest-native/extend-expect';
+import { cleanup, render } from '@testing-library/react-native'
 import { NavigationContainer } from "@react-navigation/native";
 import * as ReactNative from 'react-native';
 import { jest } from '@jest/globals';
 
 afterEach(cleanup);
 
-function renderWithNavigation(renderComponent: any){
-    return(render(<NavigationContainer>{renderComponent}</NavigationContainer>));
+function renderWithNavigation(renderComponent: any) {
+  return render(<NavigationContainer>{renderComponent}</NavigationContainer>);
 }
 
 
@@ -101,15 +100,11 @@ jest.mock('@react-navigation/native', () => ({
     useRoute: () => ({route: jest.fn()}),
 }))
 
-const mockedNavigate = jest.fn();
-jest.mock('@react-navigation/native', () => ({
-  ...jest.requireActual('@react-navigation/native'),
-  useNavigation: () => ({
-    dispatch: mockedNavigate,
-  }),
+jest.mock('firebase/database', () => ({
+  getDatabase: () => ({db: jest.fn()}),
+  ref: jest.fn(),
+  push: jest.fn(),
 }));
-
-
 
 describe('allUserScreen tests', () => {
     it('it should render okay', () => {

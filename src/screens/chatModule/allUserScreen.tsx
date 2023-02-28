@@ -2,7 +2,7 @@ import React from "react";
 import TextComponent from "../../customComponents/textComponent";
 import { FlatList, View, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { UserCardComponent } from "../../customComponents/userCardComponent";
-import { onValue, ref } from "firebase/database";
+// import { onValue, ref } from "firebase/database";
 // import { db } from "../../firebase-config";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -11,6 +11,7 @@ import auth from "@react-native-firebase/auth";
 import database from '@react-native-firebase/database';
 
 //Screen function component
+// export const ShowAllUser = () => {
 const ShowAllUser = () => {
 
   const userEmail = auth().currentUser?.email;
@@ -115,4 +116,5 @@ const styles = StyleSheet.create({
   },
 });
 
+// export default ShowAllUser;
 export default ShowAllUser;

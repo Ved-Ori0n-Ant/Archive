@@ -52,8 +52,7 @@ const SecondaryScreen = () => {
         //     phoneNumber: phoneNumber,
         // })
 
-        database()
-        .ref('/user/')
+        database().ref('/user/')
         .set(
             {
                 id: uuid.v4(),
