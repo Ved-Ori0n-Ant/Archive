@@ -1,16 +1,11 @@
 import React from 'react';
 import ShowAllUser from '../screens/chatModule/allUserScreen';
 import { cleanup, render } from '@testing-library/react-native'
-import { NavigationContainer } from "@react-navigation/native";
+import { renderWithNavigation } from '../utils/renderWithNavigation';
 import * as ReactNative from 'react-native';
-import { jest } from '@jest/globals';
+// import { jest } from '@jest/globals';
 
 afterEach(cleanup);
-
-function renderWithNavigation(renderComponent: any) {
-  return render(<NavigationContainer>{renderComponent}</NavigationContainer>);
-}
-
 
 jest.doMock('react-native', () => {
   return Object.setPrototypeOf(
@@ -79,15 +74,17 @@ jest.doMock('react-native', () => {
   );
 });
 
-jest.mock("@react-native-firebase/auth", () => ({
-    auth: {currentUser: () => jest.fn().mockReturnValue({
-        email: 'abc@def.ghi',
-        phoneNumber: '+12 1212121212',
-    })}
-}));
+jest.mock('@react-native-firebase/auth', () => ({
+  auth: jest.fn(() => ({
+    currentUser: {
+      email: 'abc@def.ghi',
+      phoneNumber: '+11 1111111111',
+    }
+  }))
+}))
 
 jest.mock('@react-native-firebase/database', () => ({
-    database: () => {},
+    database: () => jest.fn(),
     ref: () => jest.fn(),
     set: () => jest.fn(),
     remove: () => jest.fn(),
@@ -108,8 +105,8 @@ jest.mock('firebase/database', () => ({
 
 describe('allUserScreen tests', () => {
     it('it should render okay', () => {
-        const tree = renderWithNavigation(<ShowAllUser />)
-        expect(tree.toJSON()).toMatchSnapshot();
+      const tree = renderWithNavigation(<ShowAllUser />).toJSON();
+        expect(tree).toMatchSnapshot();
     });
     it('should render FlatList', () => {
         const tree = renderWithNavigation(<ShowAllUser />)

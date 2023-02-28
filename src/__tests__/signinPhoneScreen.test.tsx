@@ -2,10 +2,11 @@ import { NavigationContainer } from "@react-navigation/native";
 import { fireEvent, render } from "@testing-library/react-native";
 import React from "react";
 import PhoneSigninScreen from "../screens/signedInModule/signInWithPhoneScreen";
+import { renderWithNavigation } from "../utils/renderWithNavigation";
 
-function renderWithNavigation(renderComponent: any) {
-    return render(<NavigationContainer>{renderComponent}</NavigationContainer>);
-}
+// function renderWithNavigation(renderComponent: any) {
+//     return render(<NavigationContainer>{renderComponent}</NavigationContainer>);
+// }
 
 jest.mock('@react-native-firebase/auth', () => ({
     signInWithEmailAndPassword: jest.fn()

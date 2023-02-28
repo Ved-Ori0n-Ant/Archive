@@ -4,6 +4,7 @@ import HomeScreen from "../screens/signedInModule/signInScreen";
 import '@testing-library/jest-native/extend-expect';
 import auth from '@react-native-firebase/auth';
 import { NavigationContainer } from "@react-navigation/native";
+import { renderWithNavigation } from "../utils/renderWithNavigation";
 // import firebase from '@react-native-firebase/app'
 
 afterEach(cleanup);
@@ -31,21 +32,23 @@ describe('Tests for signin screen', ()=>{
     expect(tree.toJSON).toMatchSnapshot();
   });
   it('should have text', () => {
-    const tree = render(
-      <NavigationContainer>
-        <HomeScreen />
-      </NavigationContainer>
-    )
+    // const tree = render(
+    //   <NavigationContainer>
+    //     <HomeScreen />
+    //   </NavigationContainer>
+    // )
+    const tree = renderWithNavigation(<HomeScreen />)
     const defaultText: any = tree.queryByTestId('const-text');
     expect(defaultText.props.children).toBe('Please enter your credentials:')
   })
 })
 
 it('placeholder default values', () => {
-  render(<HomeScreen />);
-  const emailInput = screen.getByTestId('email-input');
-  const passwordInput = screen.getByTestId('password-input');
-  const submitBtn = screen.getByTestId('signin-btn');
+  // render(<HomeScreen />);
+  const tree = renderWithNavigation(<HomeScreen />)
+  const emailInput = tree.getByTestId('email-input');
+  const passwordInput = tree.getByTestId('password-input');
+  const submitBtn = tree.getByTestId('signin-btn');
   // const logInPressed = jest.fn();
 
   fireEvent.changeText(emailInput, 'abc@def.ghi')
@@ -60,11 +63,12 @@ it('placeholder default values', () => {
 })
 
 it('All touchables should be defined', () => {
-  const tree = render(
-    <NavigationContainer>
-      <HomeScreen/>
-    </NavigationContainer>
-  )
+  // const tree = render(
+  //   <NavigationContainer>
+  //     <HomeScreen/>
+  //   </NavigationContainer>
+  // )
+  const tree = renderWithNavigation(<HomeScreen />)
   const signinBtn = tree.getByTestId('signin-btn');
   const signinPhoneBtn = tree.getByTestId('signin_with_phone')
   const signUpBtn = tree.getByTestId('sign_up_btn')

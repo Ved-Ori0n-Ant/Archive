@@ -32,7 +32,6 @@ import {
 } from "react-native-image-picker";
 import uuid from "react-native-uuid";
 import storage from "@react-native-firebase/storage";
-// import { utils } from "@react-native-firebase/app";
 import MapView from "react-native-maps";
 import Geolocation from "react-native-geolocation-service";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -528,6 +527,7 @@ const ShowChat = () => {
         style={[styles.headerContainer, { justifyContent: "space-between" }]}
       >
         <TextComponent text={params?.item?.name} />
+        {/* Modal for extra-text msg sharing */}
         <Modal
           animationType="fade"
           visible={modalVisible}
@@ -582,7 +582,8 @@ const ShowChat = () => {
             </TouchableOpacity>
           </View>
         </Modal>
-        {/* <Modal
+        {/* Modal for delete options */}
+        <Modal
           visible={textSelectedModalVisible}
           animationType='fade'
           transparent={true}
@@ -593,10 +594,12 @@ const ShowChat = () => {
           <TouchableOpacity>
           <Image
                 source={require("../../assets/images/delete.png")}
-                style={styles.contactIcon}
+                style={styles.deleteIcon}
           />
           </TouchableOpacity>
-        </Modal> */}
+        </Modal>
+
+        <View style={{flexDirection: 'row'}}>
         <TouchableOpacity
           style={{
             justifyContent: "space-evenly",
@@ -606,8 +609,21 @@ const ShowChat = () => {
             setModalVisible(true);
           }}
         >
-          <Image source={require("../../assets/images/menuIcon.png")} />
+          <Image 
+            source={require("../../assets/images/menuIcon.png")} />
         </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            justifyContent: "space-evenly",
+            margin: 10,
+          }}
+          onPress={() => {
+            setTextSelectedModalVisible(true);
+          }}
+        >
+          <Image source={require("../../assets/images/delete.png")} style={styles.deleteIcon} />
+        </TouchableOpacity>
+        </View>
       </View>
 
       {/* Gifted chat component */}
@@ -860,6 +876,10 @@ const styles = StyleSheet.create({
     height: 30,
     width: 30,
     margin: 5,
+  },
+  deleteIcon: {
+    height: 30, 
+    width: 30
   },
   contactContainer: {
     borderWidth: 1,

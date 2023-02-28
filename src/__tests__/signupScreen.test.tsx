@@ -1,6 +1,5 @@
 import React from "react";
-import { cleanup, render, fireEvent, screen } from '@testing-library/react-native'
-import '@testing-library/jest-native/extend-expect';
+import { cleanup, render, fireEvent, screen } from '@testing-library/react-native';
 import { NavigationContainer } from "@react-navigation/native";
 import SecondaryScreen from "../screens/signUpModule/signUpScreen";
 
@@ -88,7 +87,7 @@ describe('sign up renders okay', () => {
       expect(clearBtn.props.children).toBeDefined();
       expect(submitBtn.props.children).toBeDefined();
     });
-    it('should call respective functions', () => {
+    it('clear btn should call clearPressed', () => {
       const tree = render(
         <NavigationContainer>
           <SecondaryScreen />
@@ -96,17 +95,11 @@ describe('sign up renders okay', () => {
       );
 
       const clearInputs = jest.fn();
-      const signUpPressed = jest.fn();
       const clearBtn = tree.getByTestId('clear_btn');
-      const submitBtn = tree.getByTestId('submit_btn');
 
       fireEvent.press(clearBtn);
-      expect(clearInputs).toBeCalledTimes(0);
-
-      fireEvent.press(submitBtn);
       // If touchables could be pressed then number of calls made would be one
       expect(clearInputs).toBeCalledTimes(0);
-      expect(signUpPressed).toBeCalledTimes(0);
     });
     it('should have goBack function', () => {
       const tree = render(

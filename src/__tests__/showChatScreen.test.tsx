@@ -1,13 +1,9 @@
 import React from "react";
 import ShowChat from "../screens/chatModule/showChatScreen";
 import { cleanup, render, fireEvent } from "@testing-library/react-native";
-import { NavigationContainer } from "@react-navigation/native";
+import { renderWithNavigation } from "../utils/renderWithNavigation";
 
 afterEach(cleanup);
-
-function renderWithNavigation(renderComponent: any) {
-  return render(<NavigationContainer>{renderComponent}</NavigationContainer>);
-}
 
 jest.mock("firebase/database", () => ({
   getDatabase: () => ({ db: jest.fn() }),
@@ -44,20 +40,14 @@ jest.mock('@react-navigation/native', () => ({
 
 describe("Chat screen tests", () => {
   it("should render okay", () => {
-    const tree = render(<ShowChat />);
-
-    console.log("@@@@@", tree.toJSON());
-
+    const tree = renderWithNavigation(<ShowChat />);
     expect(tree.toJSON()).toMatchSnapshot();
   });
-  // it("should render header", () => {
-  //   const tree = render(
-  //     <NavigationContainer>
-  //       <ShowChat />
-  //     </NavigationContainer>
-  //   );
-  //   const headerText = tree.getByTestId("header-text");
+  it("should render header", () => {
+    const tree = renderWithNavigation(<ShowChat />);
+    const headerText = tree.getByTestId("header-text");
 
-  //   console.log("~~{}~~>", headerText);
-  // });
+    expect(headerText).toBeDefined();
+    expect(headerText.props.children).toBe('dummy_reciever_name')
+  });
 });
