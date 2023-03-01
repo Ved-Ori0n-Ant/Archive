@@ -6,12 +6,12 @@ type UserCardComponentProp = {
     containerStyle?: StyleProp<ViewStyle>
 }
 
-export const UserCardComponent = (prop: UserCardComponentProp) => {
+const UserCardComponent = (prop: UserCardComponentProp) => {
     const {containerStyle} = prop
     return(
         <View style = {[styles.cardContainer, containerStyle]}>
-            <View style = {{flex: 0, flexDirection: 'row', justifyContent: 'space-between', padding: 13}}>
-                <Text style={styles.userNameText}>{prop.userName}</Text>
+            <View style = {{flex: 0, flexDirection: 'row', justifyContent: 'space-between', padding: 13}} testID='user-details'>
+                <Text style={styles.userNameText}>{prop.userName || 'userName'}</Text>
                 <Image source = {require('../assets/images/messageIcon.png')} style = {{height: 25, width: 25}} />
             </View>
         </View>
@@ -28,4 +28,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: 'black'
     },
-})
+});
+
+export default UserCardComponent;

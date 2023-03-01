@@ -2902,42 +2902,42 @@
   resolved "https://registry.npmjs.org/@react-native-community/masked-view/-/masked-view-0.1.11.tgz"
   integrity sha512-rQfMIGSR/1r/SyN87+VD8xHHzDYeHaJq6elOSCAD+0iLagXkSI2pfA0LmSXP21uw5i3em7GkkRjfJ8wpqWXZNw==
 
-"@react-native-firebase/app@^16.7.0":
-  version "16.7.0"
-  resolved "https://registry.npmjs.org/@react-native-firebase/app/-/app-16.7.0.tgz"
-  integrity sha512-+CQodRrXZnT6iX2wAnTWbNKBZJco7MM6WcDTtf7koS7+D1jV6eCzjUgAZmG0G9WKzVV9uRuitkh1ZMve1982fg==
+"@react-native-firebase/app@^17.3.1":
+  version "17.3.1"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-17.3.1.tgz#2ceca920fda786b6a32abf77c3fa9459f22e95e9"
+  integrity sha512-iZsxp9kgL3O544v5U8rIm5qcpp7yO9k//dBCXZByWzhumwVAn/TvgTrXCs60leCAJxNr9seXTSBHrToFabF+Gw==
   dependencies:
     "@expo/config-plugins" "^5.0.4"
     opencollective-postinstall "^2.0.1"
     superstruct "^0.6.2"
 
-"@react-native-firebase/auth@^16.7.0":
-  version "16.7.0"
-  resolved "https://registry.npmjs.org/@react-native-firebase/auth/-/auth-16.7.0.tgz"
-  integrity sha512-LV6L6elg/ScdQdS5CVEvGxrbDVgF7oDm2GaAhnCRp4h3iPhJrIKJQruNDF1XW8w95nnoBViOyTUf+bVHqRBEjg==
+"@react-native-firebase/auth@^17.3.1":
+  version "17.3.1"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/auth/-/auth-17.3.1.tgz#7887e40a0aa37e1fea3a6040bd872f737a33ea08"
+  integrity sha512-chMBDaNZ3vZjGdP0gsaR8ChnVZmwEUYGZpLthL0tc8ZOJN12fr113tSSOKSufri3LlksAAvMZNIne6NPFcUgGA==
   dependencies:
     "@expo/config-plugins" "^5.0.4"
     plist "^3.0.5"
 
-"@react-native-firebase/database@^16.7.0":
-  version "16.7.0"
-  resolved "https://registry.npmjs.org/@react-native-firebase/database/-/database-16.7.0.tgz"
-  integrity sha512-FR4Qw5VldWKsd9txp5Os6DtGrODYeetkG4HcPkBbr5FScRvZMhwcfF4F0E4GO57VOWayUU/yjL2hJUS9XuiPrQ==
+"@react-native-firebase/database@^17.3.1":
+  version "17.3.1"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/database/-/database-17.3.1.tgz#22049bf9698646ea327f62a9675a5c5cccc10664"
+  integrity sha512-whkpro95KCMPoSw4CxPQi65F2XRwXHV3ly6yFC9n2QKefKLFgRAPVRkR4SyX+tVbUqAJ4nbEdgfIuUUGJk4Ilw==
 
-"@react-native-firebase/firestore@^16.7.0":
-  version "16.7.0"
-  resolved "https://registry.npmjs.org/@react-native-firebase/firestore/-/firestore-16.7.0.tgz"
-  integrity sha512-steov9b55UWMAiGZ9u09FfZboMeiJh0OzfCIqPlPRQleeq26lG7upei4o1BS1+4yXvUD5eu+Ldyr6+C4gzhxmg==
+"@react-native-firebase/firestore@^17.3.1":
+  version "17.3.1"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/firestore/-/firestore-17.3.1.tgz#366bc48797fd4d680bfd33742e44a0ba64282889"
+  integrity sha512-mPLydK++X2E9lA2qIKYIve/8K7dtyTDrI5Yd4SGbBxRnsjZoNEWT8zwqvhZR4L9pQNjVYfo1Akkp/uIJuJ8t+g==
 
-"@react-native-firebase/messaging@^16.7.0":
-  version "16.7.0"
-  resolved "https://registry.npmjs.org/@react-native-firebase/messaging/-/messaging-16.7.0.tgz"
-  integrity sha512-7T/eS/eijEHQfBhIbLD0NQ5dJI62MTKqVz3IMk5EhuOo29lOnvmWxR/Fsz/mP8ZGqsHH+KiIKvyhUdTW392jAQ==
+"@react-native-firebase/messaging@^17.3.1":
+  version "17.3.1"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/messaging/-/messaging-17.3.1.tgz#6f11218bd0cc93a9c30f000034b1da8057544830"
+  integrity sha512-ApXTjrFaTBgSXtrHtrmpCqAsBXmgE7zpWZ6CHg3RPo0t4W//MoP4xl0KzoNMkH6X9ADe9c0aS9VIrATQ26pNKA==
 
-"@react-native-firebase/storage@^17.1.0":
-  version "17.1.0"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/storage/-/storage-17.1.0.tgz#ec259e145242b6d73cbdcdcdc9e28e9b92630170"
-  integrity sha512-aj16L1rhIUed5ZEgp1bi7yB9Bh5v5P35YYELGG7vDePtciWm6L5ss574wYgjCgMV0hrAwm8o2DvpJ6rMlO47Kg==
+"@react-native-firebase/storage@^17.3.1":
+  version "17.3.1"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/storage/-/storage-17.3.1.tgz#9716b0827c10a052a2642e6d74b77aeecaf30799"
+  integrity sha512-Kfz3OtLbaETXGFefDkSZbMMGym+eYbAoywqNxjFTyPbBTabyQAZ8dRXJUGLMDHhXxyhga4NMrJxB46roDClKIA==
 
 "@react-native/assets@1.0.0":
   version "1.0.0"
@@ -8854,11 +8854,6 @@ react-native-screens@^3.19.0:
   dependencies:
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
-
-react-native-simple-toast@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.npmjs.org/react-native-simple-toast/-/react-native-simple-toast-2.0.0.tgz"
-  integrity sha512-x++CvxTLSTv+o5zaC8lv5W37VH0qMDs31wQPV1DH8OMHo1EJ3cMY0Nwblha1lwA9PK1ASuGLvHmumoVFQvnLkg==
 
 react-native-size-matters@^0.3.1:
   version "0.3.1"

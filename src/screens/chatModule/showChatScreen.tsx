@@ -68,6 +68,7 @@ const ShowChat = () => {
   const [modalVisible, setModalVisible] = React.useState<boolean>(false);
   const [textSelectedModalVisible, setTextSelectedModalVisible] =
     React.useState<boolean>(false);
+  const [currentMessage, setCurrentMessage] = React.useState<any>({});
 
   //   Uncomment below to check all state values
   //   console.log('Sender messages: ', messages);
@@ -591,12 +592,19 @@ const ShowChat = () => {
             setTextSelectedModalVisible(false);
           }}
         >
-          <TouchableOpacity>
-          <Image
-                source={require("../../assets/images/delete.png")}
-                style={styles.deleteIcon}
-          />
-          </TouchableOpacity>
+          <View style={{
+              flexDirection: "row",
+              justifyContent: "space-around",
+              alignItems: "center",
+              backgroundColor: "#ddd",
+              height: WIDTH / 5,
+              borderBottomEndRadius: 30,
+              borderBottomStartRadius: 30,
+            }}>
+            <TouchableOpacity onPress={() => chatOnLongPressed(currentMessage)}>
+              <Image source={require("../../assets/images/delete.png")} style={styles.deleteIcon} />
+            </TouchableOpacity>
+          </View>
         </Modal>
 
         <View style={{flexDirection: 'row'}}>
@@ -618,7 +626,7 @@ const ShowChat = () => {
             margin: 10,
           }}
           onPress={() => {
-            setTextSelectedModalVisible(true);
+            clearChat();
           }}
         >
           <Image source={require("../../assets/images/delete.png")} style={styles.deleteIcon} />
@@ -632,6 +640,7 @@ const ShowChat = () => {
         user={{ _id: params?.fromUserData[0]?.id }}
         isLoadingEarlier
         alwaysShowSend
+        isKeyboardInternallyHandled={true}
         onSend={(messages) => {
           onSend(messages);
         }}
@@ -699,7 +708,9 @@ const ShowChat = () => {
                 {...props}
                 user={{ _id: params?.fromUserData[0]?.id }}
                 onLongPress={() => {
-                  chatOnLongPressed(currentMessage);
+                  // chatOnLongPressed(currentMessage);
+                  setTextSelectedModalVisible(true);
+                  setCurrentMessage(currentMessage);
                 }}
                 wrapperStyle={{
                   right: {
@@ -783,7 +794,9 @@ const ShowChat = () => {
                   padding: 3,
                 }}
                 onLongPress={() => {
-                  chatOnLongPressed(currentMessage);
+                  // chatOnLongPressed(currentMessage);
+                  setTextSelectedModalVisible(true);
+                  setCurrentMessage(currentMessage);
                 }}
               >
                 <View style={[styles.contactContainer, { width: WIDTH / 2.2 }]}>
@@ -815,7 +828,9 @@ const ShowChat = () => {
               <Bubble
                 {...props}
                 onLongPress={() => {
-                  chatOnLongPressed(currentMessage);
+                  // chatOnLongPressed(currentMessage);
+                  setTextSelectedModalVisible(true);
+                  setCurrentMessage(currentMessage);
                 }}
                 wrapperStyle={{
                   right: {

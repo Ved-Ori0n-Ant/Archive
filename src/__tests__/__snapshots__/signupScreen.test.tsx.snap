@@ -33,6 +33,7 @@ exports[`sign up renders okay should render fine 1`] = `
               ],
             ]
           }
+          testID="custom-text"
         >
           Please sign-up
         </Text>
@@ -59,6 +60,7 @@ exports[`sign up renders okay should render fine 1`] = `
               undefined,
             ]
           }
+          testID="custom-text"
         >
           Please fill below details
         </Text>
@@ -96,6 +98,7 @@ exports[`sign up renders okay should render fine 1`] = `
             ]
           }
           testID="name-input"
+          value="glibberish data"
         />
       </View>
       <View
@@ -131,6 +134,7 @@ exports[`sign up renders okay should render fine 1`] = `
             ]
           }
           testID="email-input"
+          value="glibberish data"
         />
       </View>
       <View
@@ -166,6 +170,7 @@ exports[`sign up renders okay should render fine 1`] = `
             ]
           }
           testID="number-input"
+          value="glibberish data"
         />
       </View>
       <View
@@ -210,7 +215,7 @@ exports[`sign up renders okay should render fine 1`] = `
               ]
             }
             testID="pass-input"
-            value=""
+            value="glibberish data"
           />
         </View>
         <View
@@ -247,7 +252,7 @@ exports[`sign up renders okay should render fine 1`] = `
               ]
             }
             testID="pass-input"
-            value=""
+            value="glibberish data"
           />
         </View>
       </View>
@@ -290,6 +295,7 @@ exports[`sign up renders okay should render fine 1`] = `
                   undefined,
                 ]
               }
+              testID="custom-text"
             >
               Upload your profile photo
             </Text>
@@ -337,6 +343,7 @@ exports[`sign up renders okay should render fine 1`] = `
                     "opacity": 1,
                   }
                 }
+                testID="image_upload"
               >
                 <View
                   style={
@@ -410,6 +417,7 @@ exports[`sign up renders okay should render fine 1`] = `
                   undefined,
                 ]
               }
+              testID="custom-text"
             >
               Enter your D.O.B.
             </Text>
@@ -455,9 +463,10 @@ exports[`sign up renders okay should render fine 1`] = `
                   "opacity": 1,
                 }
               }
+              testID="custom-datepicker-touchableopacity"
             >
               <Text>
-                2/28/2023
+                3/1/2023
               </Text>
             </View>
           </View>
@@ -674,6 +683,7 @@ exports[`sign up renders okay should render fine 1`] = `
                     },
                   ]
                 }
+                testID="custom-text"
               >
                 Already have an account?
               </Text>

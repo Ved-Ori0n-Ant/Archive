@@ -1,7 +1,7 @@
 import React from "react";
 import TextComponent from "../../customComponents/textComponent";
 import { FlatList, View, TouchableOpacity, StyleSheet, Image } from "react-native";
-import { UserCardComponent } from "../../customComponents/userCardComponent";
+import UserCardComponent from "../../customComponents/userCardComponent";
 // import { onValue, ref } from "firebase/database";
 // import { db } from "../../firebase-config";
 import { useNavigation } from "@react-navigation/native";

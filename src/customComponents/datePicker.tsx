@@ -24,8 +24,8 @@ const DatePickerComponent = (prop: DatePickerComponentProp) => {
     }
 
     return(
-        <View style = {prop.style} testID={prop.testID}>
-            <TouchableOpacity onPress={showDatePicker}>
+        <View style = {prop.style} testID={prop.testID || 'customDatePicker'}>
+            <TouchableOpacity testID="custom-datepicker-touchableopacity" onPress={showDatePicker}>
                 <Text>{date.toLocaleDateString()}</Text>
             </TouchableOpacity>
         </View>

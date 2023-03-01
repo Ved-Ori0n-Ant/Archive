@@ -74,7 +74,7 @@ exports[`Phone signin screen should render okay! should render okay 1`] = `
         ]
       }
       testID="phone-input"
-      value=""
+      value="glibberish data"
     />
   </View>
   <View

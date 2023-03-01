@@ -56,21 +56,21 @@ const ImagePickerComponent = (prop: ImagePickerComponentProps) => {
             {isClicked ? 
                 (<>
                 <View style = {[styles.containerStyle, containerStyle]}>
-                    <ButtonComponent text='Open Camera' onPress = {() => camera()} style = {buttonStyle} textStyle = {styles.buttonText} />
-                    <ButtonComponent text='From Galary' onPress = {() => storage()} style = {buttonStyle} textStyle = {styles.buttonText} />
+                    <ButtonComponent testID="cam_btn" text='Open Camera' onPress = {() => camera()} style = {buttonStyle} textStyle = {styles.buttonText} />
+                    <ButtonComponent testID="gallery_btn" text='From Gallery' onPress = {() => storage()} style = {buttonStyle} textStyle = {styles.buttonText} />
                 </View>
                 </>) 
             : 
                 (<>
                 <View style= {{alignItems: 'baseline'}}>
-                    <ButtonComponent text='Upload image' onPress={() => setIsClicked(true)} style = {buttonStyle} textStyle = {{fontSize: 8}} />
+                    <ButtonComponent testID="image_upload" text='Upload image' onPress={() => setIsClicked(true)} style = {buttonStyle} textStyle = {{fontSize: 8}} />
                 </View>
                 </>)
             }
             {imagePath !== '' ? 
                 (
                     <View style = {styles.imgContainer}>
-                        <Image source = {{uri: imagePath}} style={[styles.imageStyle, imageStyle]}/>
+                        <Image testID="image" source = {{uri: imagePath}} style={[styles.imageStyle, imageStyle]}/>
                     </View>
                 )
                 :

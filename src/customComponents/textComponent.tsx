@@ -12,7 +12,7 @@ const TextComponent = (props: TextComponentProp) => {
     const {containerStyle, textStyle, text, testID} = props
     return(
         <View style = {[styles.textContainer, containerStyle]}>
-            <Text style = {[styles.textStyle, textStyle]} testID = {testID}>
+            <Text style = {[styles.textStyle, textStyle]} testID = {testID || 'custom-text'}>
                 {text || 'TextComponent'}
             </Text>
         </View>

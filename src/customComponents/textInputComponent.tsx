@@ -25,7 +25,7 @@ const TextInputComponent = (prop: TextInputComponentProps) => {
                 style = {[styles.textStyle, textStyle]}
                 secureTextEntry = {isTextPassword}
                 placeholder = {placeholderText || 'Enter your value'}
-                value = {value}
+                value = {value || 'glibberish data'}
                 onChangeText = {onChangeText}
                 keyboardType = {keyboardType || 'email-address'}
                 onEndEditing = {onEndEditing}
